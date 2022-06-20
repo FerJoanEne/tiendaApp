@@ -5,6 +5,11 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import org.apache.log4j.Logger;
 
+import modelo.Agenda;
+import persistencia.dao.mysql.DAOSQLFactory;
+import presentacion.controlador.Controlador;
+import presentacion.vista.Vista;
+
 public class Conexion 
 {
 	public static Conexion instancia;
@@ -16,6 +21,7 @@ public class Conexion
 		{
 			this.connection = DriverManager.getConnection("jdbc:mysql://ufwrf3seko1d8hq2:7laQtPxhVAFTMPa94SXb@bdokimpevmxyofkbslzf-mysql.services.clever-cloud.com:3306/bdokimpevmxyofkbslzf","ufwrf3seko1d8hq2","7laQtPxhVAFTMPa94SXb");
 			this.connection.setAutoCommit(false);
+			System.out.println("conexion exitosa");
 		}
 		catch(Exception e)
 		{
@@ -53,4 +59,5 @@ public class Conexion
 		}
 		instancia = null;
 	}
+
 }

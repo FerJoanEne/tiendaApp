@@ -5,7 +5,6 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 import modelo.Agenda;
-import presentacion.vista.VentanaPersona;
 import presentacion.vista.Vista;
 import dto.PersonaDTO;
 
@@ -13,30 +12,13 @@ public class Controlador implements ActionListener
 {
 		private Vista vista;
 		private List<PersonaDTO> personasEnTabla;
-		private VentanaPersona ventanaPersona; 
 		private Agenda agenda;
 		
 		public Controlador(Vista vista, Agenda agenda)
 		{
 			this.vista = vista;
-			this.vista.getBtnAgregar().addActionListener(a->ventanaAgregarPersona(a));
 			this.vista.getBtnBorrar().addActionListener(s->borrarPersona(s));
-			this.ventanaPersona = VentanaPersona.getInstance();
-			this.ventanaPersona.getBtnAgregarPersona().addActionListener(p->guardarPersona(p));
 			this.agenda = agenda;
-		}
-		
-		private void ventanaAgregarPersona(ActionEvent a) {
-			this.ventanaPersona.mostrarVentana();
-		}
-
-		private void guardarPersona(ActionEvent p) {
-			String nombre = this.ventanaPersona.getTxtNombre().getText();
-			String tel = ventanaPersona.getTxtTelefono().getText();
-			PersonaDTO nuevaPersona = new PersonaDTO(0, nombre, tel);
-			this.agenda.agregarPersona(nuevaPersona);
-			this.refrescarTabla();
-			this.ventanaPersona.cerrar();
 		}
 
 		public void borrarPersona(ActionEvent s)
