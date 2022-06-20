@@ -1,18 +1,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>ar.edu.ungs</groupId>
-	<artifactId>agenda</artifactId>
+	<groupId>com.jferdev.tiendaApp</groupId>
+	<artifactId>tiendaApp</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>Agenda App</name>
+	<name>tiendaApp</name>
 	<description>Aplicacion desktop</description>
-  
-  
   	
     <developers>
         <developer>
-            <id>9999999</id>
-            <name>Student Name</name>
-            <email>student@theirmail.com</email>
+            <id>01</id>
+            <name>Student jferdev</name>
         </developer>
     </developers>
 
@@ -33,11 +30,11 @@
             <version>1.7.7</version>
         </dependency>
 		<!-- https://mvnrepository.com/artifact/org.olap4j/olap4j -->
-<dependency>
-    <groupId>org.olap4j</groupId>
-    <artifactId>olap4j</artifactId>
-    <version>1.2.0</version>
-</dependency>
+	<dependency>
+   		<groupId>org.olap4j</groupId>
+	    <artifactId>olap4j</artifactId>
+	    <version>1.2.0</version>
+	</dependency>
   	
         <!-- Unit testing is mandatory -->
         <dependency>
@@ -53,14 +50,13 @@
 		    <version>1.2</version>
 		</dependency>
 	    
-		<!-- Mysql-connector-java -->
-		<dependency>
-		    <groupId>mysql</groupId>
-		    <artifactId>mysql-connector-java</artifactId>
-		    <!--<version>5.1.6</version>-->
-		    <!-- USAR LA VERSIÓN 5.1.44 SI USÁS MYSQL8 --> 
-		    <version>5.1.44</version>
-		</dependency>
+		<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+	<dependency>
+	     <groupId>mysql</groupId>
+ 	  	 <artifactId>mysql-connector-java</artifactId>
+ 	  	 <version>8.0.29</version>
+	</dependency>
+
 
     </dependencies>
 

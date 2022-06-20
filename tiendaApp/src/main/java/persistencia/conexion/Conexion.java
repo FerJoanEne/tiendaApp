@@ -9,20 +9,18 @@ public class Conexion
 {
 	public static Conexion instancia;
 	private Connection connection;
-	private Logger log = Logger.getLogger(Conexion.class);	
 	
 	private Conexion()
 	{
 		try
 		{
-			Class.forName("com.mysql.jdbc.Driver"); // quitar si no es necesario
-			this.connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/agenda","root","root");
+			this.connection = DriverManager.getConnection("jdbc:mysql://ufwrf3seko1d8hq2:7laQtPxhVAFTMPa94SXb@bdokimpevmxyofkbslzf-mysql.services.clever-cloud.com:3306/bdokimpevmxyofkbslzf","ufwrf3seko1d8hq2","7laQtPxhVAFTMPa94SXb");
 			this.connection.setAutoCommit(false);
-			log.info("Conexión exitosa");
 		}
 		catch(Exception e)
 		{
-			log.error("Conexión fallida", e);
+			System.out.println(e);
+			System.out.println("Conexion fallida");
 		}
 	}
 	
@@ -46,11 +44,12 @@ public class Conexion
 		try 
 		{
 			this.connection.close();
-			log.info("Conexion cerrada");
+			System.out.println("Conexion cerrada");
 		}
 		catch (SQLException e) 
 		{
-			log.error("Error al cerrar la conexión!", e);
+			System.out.println(e);
+			System.out.println("Error al cerrar la conexion");
 		}
 		instancia = null;
 	}
