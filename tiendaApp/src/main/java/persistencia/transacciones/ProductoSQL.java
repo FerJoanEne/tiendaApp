@@ -30,7 +30,7 @@ public class ProductoSQL
 				entity.getTransaction().rollback();
 				System.out.println(hibernateEx);
 			} catch (RuntimeException runtimeEx) {
-				System.err.printf("No se pudo revertir la transacción: ", runtimeEx);
+				System.err.printf("No se pudo revertir la transacciï¿½n: ", runtimeEx);
 			}
 		}
 		
@@ -54,7 +54,7 @@ public class ProductoSQL
 					entity.getTransaction().rollback();
 					System.out.println(hibernateEx);
 				} catch (RuntimeException runtimeEx) {
-					System.err.printf("No se pudo revertir la transacción: ", runtimeEx);
+					System.err.printf("No se pudo revertir la transaccion: ", runtimeEx);
 				}
 			}
 		}
@@ -69,24 +69,24 @@ public class ProductoSQL
 		List<Producto> productos = new ArrayList<Producto>();
 		String datoAbuscar = dato.toString();
 		if( tipoDeBusqueda.trim().equals("ID".trim())) {
-			Producto productoEncontrado = entity.find(Producto.class,Integer.parseInt(datoAbuscar));
+			Producto productoEncontrado = entity.find(Producto.class,Long.parseLong(datoAbuscar));
 			if( productoEncontrado != null) {
 				productos.add(productoEncontrado);
 			}
 		}
 		
 		if( tipoDeBusqueda.trim().equals("nombre".trim())) {
-			Query query = entity.createQuery("from Producto p where p.nombre="+datoAbuscar);
+			Query query = entity.createQuery("from Producto producto where producto.nombre='"+datoAbuscar+"' ");
 			productos = query.getResultList();
 		}
 		
 		if( tipoDeBusqueda.trim().equals("precio".trim())) {
-			Query query = entity.createQuery("from Producto p where p.precio="+Double.parseDouble(datoAbuscar));
+			Query query = entity.createQuery("from Producto producto where producto.precio='"+Double.parseDouble(datoAbuscar)+"' ");
 			productos = query.getResultList();
 		}
 		
 		if ( tipoDeBusqueda.trim().equals("categoria".trim())) {
-			Query query = entity.createQuery("from Producto p where p.categoria="+datoAbuscar);
+			Query query = entity.createQuery("from Producto producto where producto.categoria='"+datoAbuscar+"' ");
 			productos = query.getResultList();
 		}
 		

@@ -24,20 +24,18 @@
 
     <dependencies>
         <!-- Everyone needs a logger, this is my preference -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>1.7.7</version>
-        </dependency>
+	  <dependency>
+		    <groupId>org.apache.logging.log4j</groupId>
+		    <artifactId>log4j-api</artifactId>
+		    <version>2.17.2</version>
+	  </dependency>
+	  <dependency>
+		    <groupId>org.apache.logging.log4j</groupId>
+		    <artifactId>log4j-core</artifactId>
+		    <version>2.17.2</version>
+	  </dependency>
         
-		<!-- https://mvnrepository.com/artifact/org.olap4j/olap4j -->
-		<dependency>
-	   		<groupId>org.olap4j</groupId>
-		    <artifactId>olap4j</artifactId>
-		    <version>1.2.0</version>
-		</dependency>
-  	
-        <!-- Unit testing is mandatory -->
+            <!-- Unit testing is mandatory -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
