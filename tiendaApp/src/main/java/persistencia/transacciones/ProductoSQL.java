@@ -76,7 +76,17 @@ public class ProductoSQL
 		}
 		
 		if( tipoDeBusqueda.trim().equals("nombre".trim())) {
-			Query query = entity.createQuery("SELECT p FROM Producto p");
+			Query query = entity.createQuery("from Producto p where p.nombre="+datoAbuscar);
+			productos = query.getResultList();
+		}
+		
+		if( tipoDeBusqueda.trim().equals("precio".trim())) {
+			Query query = entity.createQuery("from Producto p where p.precio="+Double.parseDouble(datoAbuscar));
+			productos = query.getResultList();
+		}
+		
+		if ( tipoDeBusqueda.trim().equals("categoria".trim())) {
+			Query query = entity.createQuery("from Producto p where p.categoria="+datoAbuscar);
 			productos = query.getResultList();
 		}
 		
