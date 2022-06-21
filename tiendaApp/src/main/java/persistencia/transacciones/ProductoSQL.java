@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
+
 import org.hibernate.HibernateException;
 
 import modelo.Producto;
@@ -61,9 +63,10 @@ public class ProductoSQL
 		
 	}
 	//busqueda por ID, por nombre, por categoria, por precio
+	@SuppressWarnings("unchecked")
 	public static List<Producto> searchProducts(String tipoDeBusqueda, Object dato) {
 		EntityManager entity = Conexion.getEntityManagerFactory().createEntityManager();
-		ArrayList<Producto> productos = new ArrayList<Producto>();
+		List<Producto> productos = new ArrayList<Producto>();
 		String datoAbuscar = dato.toString();
 		if( tipoDeBusqueda.trim().equals("ID".trim())) {
 			Producto productoEncontrado = entity.find(Producto.class,Integer.parseInt(datoAbuscar));
@@ -73,7 +76,8 @@ public class ProductoSQL
 		}
 		
 		if( tipoDeBusqueda.trim().equals("nombre".trim())) {
-			
+			Query query = entity.createQuery("SELECT p FROM Producto p");
+			productos = query.getResultList();
 		}
 		
 		return productos;
