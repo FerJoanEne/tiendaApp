@@ -30,7 +30,7 @@ public class ProductoSQL
 				entity.getTransaction().rollback();
 				System.out.println(hibernateEx);
 			} catch (RuntimeException runtimeEx) {
-				System.err.printf("No se pudo revertir la transacci�n: ", runtimeEx);
+				System.err.printf("No se pudo revertir la transaccion: ", runtimeEx);
 			}
 		}
 		
@@ -62,6 +62,32 @@ public class ProductoSQL
 		return successfulUpdate; 
 		
 	}
+	
+	public static boolean remove(Producto producto) {
+		EntityManager entity = Conexion.getEntityManagerFactory().createEntityManager();
+		boolean successfulRemoval = false;
+		if( entity.find(Producto.class,producto.getCodigo()) != null) {
+			try {
+				entity.getTransaction().begin();
+				entity.remove(producto);
+				entity.getTransaction().commit();
+				successfulRemoval = true;
+				entity.close();
+				Conexion.shutdown(); 							///ver si falla
+			} catch(HibernateException hibernateEx) {
+				try {
+					entity.getTransaction().rollback();
+					System.out.println(hibernateEx);
+				} catch (RuntimeException runtimeEx) {
+					System.err.printf("No se pudo revertir la transaccion: ", runtimeEx);
+				}
+			}
+		}
+		
+		return successfulRemoval; 
+		
+	}
+	
 	//busqueda por ID, por nombre, por categoria, por precio
 	@SuppressWarnings("unchecked")
 	public static List<Producto> searchProducts(String tipoDeBusqueda, Object dato) {
@@ -69,7 +95,7 @@ public class ProductoSQL
 		List<Producto> productos = new ArrayList<Producto>();
 		String datoAbuscar = dato.toString();
 		if( tipoDeBusqueda.trim().equals("ID".trim())) {
-			Producto productoEncontrado = entity.find(Producto.class,Long.parseLong(datoAbuscar));
+			Producto productoEncontrado = entity.find(Producto.class,Integer.parseInt(datoAbuscar));
 			if( productoEncontrado != null) {
 				productos.add(productoEncontrado);
 			}
@@ -90,6 +116,8 @@ public class ProductoSQL
 			productos = query.getResultList();
 		}
 		
+		entity.close();
+		Conexion.shutdown(); 
 		return productos;
 	}
 	

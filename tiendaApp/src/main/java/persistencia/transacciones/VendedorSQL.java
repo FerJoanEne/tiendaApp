@@ -29,7 +29,7 @@ public class VendedorSQL {
 				entity.getTransaction().rollback();
 				System.out.println(hibernateEx);
 			} catch (RuntimeException runtimeEx) {
-				System.err.printf("No se pudo revertir la transacci�n: ", runtimeEx);
+				System.err.printf("No se pudo revertir la transaccion: ", runtimeEx);
 			}
 		}
 		
@@ -37,13 +37,13 @@ public class VendedorSQL {
 		
 	}
 	
-	public static boolean update(Producto producto) {
+	public static boolean update(Vendedor vendedor) {
 		EntityManager entity = Conexion.getEntityManagerFactory().createEntityManager();
 		boolean successfulUpdate = false;
-		if( entity.find(Producto.class,producto.getCodigo()) != null) {
+		if( entity.find(Vendedor.class,vendedor.getCodigo()) != null) {
 			try {
 				entity.getTransaction().begin();
-				entity.merge(producto);
+				entity.merge(vendedor);
 				entity.getTransaction().commit();
 				successfulUpdate = true;
 				entity.close();
@@ -61,35 +61,55 @@ public class VendedorSQL {
 		return successfulUpdate; 
 		
 	}
-	//busqueda por ID, por nombre, por categoria, por precio
-	@SuppressWarnings("unchecked")
-	public static List<Producto> searchProducts(String tipoDeBusqueda, Object dato) {
+	
+	public static boolean remove(Vendedor vendedor) {
 		EntityManager entity = Conexion.getEntityManagerFactory().createEntityManager();
-		List<Producto> productos = new ArrayList<Producto>();
+		boolean successfulRemoval = false;
+		if( entity.find(Vendedor.class,vendedor.getCodigo()) != null) {
+			try {
+				entity.getTransaction().begin();
+				entity.remove(vendedor);
+				entity.getTransaction().commit();
+				successfulRemoval = true;
+				entity.flush();
+			    entity.clear();
+				entity.close();
+				Conexion.shutdown(); 							///ver si falla
+			} catch(HibernateException hibernateEx) {
+				try {
+					entity.getTransaction().rollback();
+					System.out.println(hibernateEx);
+				} catch (RuntimeException runtimeEx) {
+					System.err.printf("No se pudo revertir la transaccion: ", runtimeEx);
+				}
+			}
+		}
+	
+		return successfulRemoval; 
+	}
+	
+	
+	//busqueda por codigo, o por nombre
+	@SuppressWarnings("unchecked")
+	public static List<Vendedor> searchProducts(String tipoDeBusqueda, Object dato) {
+		EntityManager entity = Conexion.getEntityManagerFactory().createEntityManager();
+		List<Vendedor> vendedores = new ArrayList<Vendedor>();
 		String datoAbuscar = dato.toString();
-		if( tipoDeBusqueda.trim().equals("ID".trim())) {
-			Producto productoEncontrado = entity.find(Producto.class,Long.parseLong(datoAbuscar));
-			if( productoEncontrado != null) {
-				productos.add(productoEncontrado);
+		if( tipoDeBusqueda.trim().equals("codigo".trim())) {
+			Vendedor vendedorEncontrado = entity.find(Vendedor.class,Integer.parseInt(datoAbuscar));
+			if( vendedorEncontrado != null) {
+				vendedores.add(vendedorEncontrado);
 			}
 		}
 		
 		if( tipoDeBusqueda.trim().equals("nombre".trim())) {
-			Query query = entity.createQuery("from Producto producto where producto.nombre='"+datoAbuscar+"' ");
-			productos = query.getResultList();
+			Query query = entity.createQuery("from Vendedor vendedor where vendedor.nombre='"+datoAbuscar+"' ");
+			vendedores = query.getResultList();
 		}
 		
-		if( tipoDeBusqueda.trim().equals("precio".trim())) {
-			Query query = entity.createQuery("from Producto producto where producto.precio='"+Double.parseDouble(datoAbuscar)+"' ");
-			productos = query.getResultList();
-		}
-		
-		if ( tipoDeBusqueda.trim().equals("categoria".trim())) {
-			Query query = entity.createQuery("from Producto producto where producto.categoria='"+datoAbuscar+"' ");
-			productos = query.getResultList();
-		}
-		
-		return productos;
+		entity.close();
+		Conexion.shutdown(); 
+		return vendedores;
 	}
 
 }

@@ -13,7 +13,7 @@ public class Vendedor {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long codigo;
+	private int codigo;
 
 	@Column
 	private String nombre;
@@ -21,13 +21,13 @@ public class Vendedor {
 	@Column
 	private double sueldo;
 
-	public Long getCodigo() {
+	public int getCodigo() {
 		return codigo;
 	}
 	
 	//////////////////////////////////////
 
-	public void setCodigo(Long codigo) {
+	public void setCodigo(int codigo) {
 		this.codigo = codigo;
 	}
 
