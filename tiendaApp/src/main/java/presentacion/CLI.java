@@ -7,6 +7,7 @@ public class CLI {
 	public static void mostrarMenuPrincipal() {
 		int input = 0;
 		Scanner sc = new Scanner(System.in);
+		
 		while(input != 5) {
 			System.out.println("1. PRODUCTOS");
 			System.out.println("2. VENDEDORES");

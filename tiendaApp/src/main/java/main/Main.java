@@ -18,9 +18,5 @@ public class Main
 		Vendedor v = new Vendedor();
 		v.setCodigo(5);
 		System.out.println(VendedorSQL.remove(v));*/
-		
-		System.out.print("Everything on the console will cleared");
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
 	}
 }
