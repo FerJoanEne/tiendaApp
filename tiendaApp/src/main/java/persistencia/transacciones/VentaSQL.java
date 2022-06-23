@@ -19,7 +19,6 @@ public class VentaSQL {
 			entity.getTransaction().commit();
 			successfulEntry = true;
 			entity.close();
-			Conexion.shutdown(); 							///ver si falla
 		} catch(HibernateException hibernateEx) {
 			try {
 				entity.getTransaction().rollback();
@@ -43,7 +42,6 @@ public class VentaSQL {
 				entity.getTransaction().commit();
 				successfulUpdate = true;
 				entity.close();
-				Conexion.shutdown(); 							///ver si falla
 			} catch(HibernateException hibernateEx) {
 				try {
 					entity.getTransaction().rollback();
@@ -68,7 +66,6 @@ public class VentaSQL {
 				entity.getTransaction().commit();
 				successfulRemoval = true;
 				entity.close();
-				Conexion.shutdown(); 							///ver si falla
 			} catch(HibernateException hibernateEx) {
 				try {
 					entity.getTransaction().rollback();

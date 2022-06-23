@@ -24,7 +24,6 @@ public class ProductoSQL
 			entity.getTransaction().commit();
 			successfulEntry = true;
 			entity.close();
-			Conexion.shutdown(); 							///ver si falla
 		} catch(HibernateException hibernateEx) {
 			try {
 				entity.getTransaction().rollback();
@@ -48,7 +47,6 @@ public class ProductoSQL
 				entity.getTransaction().commit();
 				successfulUpdate = true;
 				entity.close();
-				Conexion.shutdown(); 							///ver si falla
 			} catch(HibernateException hibernateEx) {
 				try {
 					entity.getTransaction().rollback();
@@ -72,8 +70,7 @@ public class ProductoSQL
 				entity.remove(producto);
 				entity.getTransaction().commit();
 				successfulRemoval = true;
-				entity.close();
-				Conexion.shutdown(); 							///ver si falla
+				entity.close(); 							///ver si falla
 			} catch(HibernateException hibernateEx) {
 				try {
 					entity.getTransaction().rollback();
@@ -117,7 +114,6 @@ public class ProductoSQL
 		}
 		
 		entity.close();
-		Conexion.shutdown(); 
 		return productos;
 	}
 	

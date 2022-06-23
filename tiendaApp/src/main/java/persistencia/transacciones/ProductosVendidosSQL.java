@@ -21,8 +21,7 @@ public class ProductosVendidosSQL {
 			entity.persist(prodVendidos);
 			entity.getTransaction().commit();
 			successfulEntry = true;
-			entity.close();
-			Conexion.shutdown(); 							///ver si falla
+			entity.close();						///ver si falla
 		} catch(HibernateException hibernateEx) {
 			try {
 				entity.getTransaction().rollback();
@@ -45,8 +44,7 @@ public class ProductosVendidosSQL {
 				entity.merge(prodVendidos);
 				entity.getTransaction().commit();
 				successfulUpdate = true;
-				entity.close();
-				Conexion.shutdown(); 							///ver si falla
+				entity.close();							///ver si falla
 			} catch(HibernateException hibernateEx) {
 				try {
 					entity.getTransaction().rollback();
@@ -70,8 +68,7 @@ public class ProductosVendidosSQL {
 				entity.remove(prodVendidos);
 				entity.getTransaction().commit();
 				successfulRemoval = true;
-				entity.close();
-				Conexion.shutdown(); 							///ver si falla
+				entity.close();					///ver si falla
 			} catch(HibernateException hibernateEx) {
 				try {
 					entity.getTransaction().rollback();
@@ -100,7 +97,6 @@ public class ProductosVendidosSQL {
 		}
 		
 		entity.close();
-		Conexion.shutdown(); 
 		return prodVendidos;
 	}
 	

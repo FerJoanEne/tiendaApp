@@ -23,7 +23,6 @@ public class VendedorSQL {
 			entity.getTransaction().commit();
 			successfulEntry = true;
 			entity.close();
-			Conexion.shutdown(); 							///ver si falla
 		} catch(HibernateException hibernateEx) {
 			try {
 				entity.getTransaction().rollback();
@@ -47,7 +46,6 @@ public class VendedorSQL {
 				entity.getTransaction().commit();
 				successfulUpdate = true;
 				entity.close();
-				Conexion.shutdown(); 							///ver si falla
 			} catch(HibernateException hibernateEx) {
 				try {
 					entity.getTransaction().rollback();
@@ -65,16 +63,16 @@ public class VendedorSQL {
 	public static boolean remove(Vendedor vendedor) {
 		EntityManager entity = Conexion.getEntityManagerFactory().createEntityManager();
 		boolean successfulRemoval = false;
-		if( entity.find(Vendedor.class,vendedor.getCodigo()) != null) {
+		Vendedor vendedorAuxiliar = entity.find(Vendedor.class,vendedor.getCodigo());
+		if( vendedorAuxiliar != null) {
 			try {
 				entity.getTransaction().begin();
-				entity.remove(vendedor);
+				entity.remove(vendedorAuxiliar);
 				entity.getTransaction().commit();
 				successfulRemoval = true;
 				entity.flush();
 			    entity.clear();
-				entity.close();
-				Conexion.shutdown(); 							///ver si falla
+				entity.close(); 							///ver si falla
 			} catch(HibernateException hibernateEx) {
 				try {
 					entity.getTransaction().rollback();
@@ -91,7 +89,7 @@ public class VendedorSQL {
 	
 	//busqueda por codigo, o por nombre
 	@SuppressWarnings("unchecked")
-	public static List<Vendedor> searchProducts(String tipoDeBusqueda, Object dato) {
+	public static List<Vendedor> searchVendedor(String tipoDeBusqueda, Object dato) {
 		EntityManager entity = Conexion.getEntityManagerFactory().createEntityManager();
 		List<Vendedor> vendedores = new ArrayList<Vendedor>();
 		String datoAbuscar = dato.toString();
@@ -106,9 +104,7 @@ public class VendedorSQL {
 			Query query = entity.createQuery("from Vendedor vendedor where vendedor.nombre='"+datoAbuscar+"' ");
 			vendedores = query.getResultList();
 		}
-		
-		entity.close();
-		Conexion.shutdown(); 
+
 		return vendedores;
 	}
 
