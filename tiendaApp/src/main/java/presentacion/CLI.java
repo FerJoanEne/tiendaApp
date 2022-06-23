@@ -15,29 +15,21 @@ public class CLI {
 			System.out.println("4. FINALIZAR");
 			
 		}
-		
-
-		
-		
 	}
 	
-	public static void limpiarConsola() {
-		try{
-            String operatingSystem = System.getProperty("os.name");
-              
-            if(operatingSystem.contains("Windows")){        
-                ProcessBuilder pb = new ProcessBuilder("cmd", "/c", "cls");
-                Process startProcess = pb.start();
-                startProcess.waitFor();
-            } else {
-                ProcessBuilder pb = new ProcessBuilder("clear");
-                Process startProcess = pb.start();
-
-                startProcess.waitFor();
-            } 
+	public static void limpiarConsola(){
+        try{
+        	
+        	if (System.getProperty("os.name").contains("windows"))
+            {
+              new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            }
+            else
+            {
+              System.out.print(System.getProperty("os.name"));
+            }
         }catch(Exception e){
             System.out.println(e);
         }
-    
-	} 
+    }
 }
