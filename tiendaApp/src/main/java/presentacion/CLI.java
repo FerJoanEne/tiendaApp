@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class CLI {
 	
-	public static void mostrarMenuPrincipal() {
+	public CLI() {
 		int input = 0;
 		Scanner sc = new Scanner(System.in);
 		while(input != 5) {
@@ -13,19 +13,69 @@ public class CLI {
 			System.out.println("3. VENTAS");
 			System.out.println("4. FINALIZAR");
 			input = sc.nextInt();
-			comprobarOpcion(input);
+			mostrarOpcion(input);
+			/*if(validarInput(input)) {
+				mostrarOpcion(input);
+			};*/
 		}
 	}
 	
-	private static void comprobarOpcion(int input) {
-		validarInput(input);
+
+	private static void mostrarOpcion(int input) {
+	    System.out.println("La opcion elegida es: " + input);
+		switch(input) {
+		   case 1 :
+		      menuProductos();
+		      break;
+		   
+		   case 2 :
+		      menuVendedores();
+		      break;
+		   
+		   case 3:
+			   menuVentas();
+			   break;
+			   
+		   case 4:
+			   finalizar();
+			   break;
+		   default : 
+		     System.out.println("algo salio mal que llego al default");
+		}
+			
 		
 	}
 
-	private static void validarInput(Object input) {
+
+	private static void menuVentas() {
+		// TODO Auto-generated method stub
+		System.out.println("entraste al menu ventas");
+		
+	}
+
+
+	private static void menuVendedores() {
+		// TODO Auto-generated method stub
+		System.out.println("entraste al menu vnededores");		
+	}
+
+
+	private static void menuProductos() {
+		// TODO Auto-generated method stub
+		System.out.println("entraste al menu productos");
+	}
+
+
+	private static boolean validarInput(Object input) {
+		return false;
 		
 		
 		
+	}
+	
+	private static void finalizar() {
+		System.out.println("Programa finalizado");
+        System.exit(0);
 	}
 
 	public static void limpiarConsola(){
