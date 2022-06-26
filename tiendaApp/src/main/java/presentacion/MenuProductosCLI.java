@@ -1,6 +1,10 @@
 package presentacion;
 
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.apache.logging.log4j.util.SystemPropertiesPropertySource;
 
 import modelo.Producto;
 import persistencia.transacciones.ProductoSQL;
@@ -61,12 +65,22 @@ public class MenuProductosCLI {
 		String inputCategoria = scan.nextLine();
 
 		System.out.println("Ingrese el precio del producto");
-		double inputPrecio = scan.nextDouble();
-		
+		String inputPrecio = scan.nextLine();
+		try
+		  {
+		    double precio = Double.parseDouble(inputPrecio);
+		    // TODO1
+		  } 
+		catch(NumberFormatException e) 
+		  {
+		    System.out.println("error, ingrese un precio valido");
+		    System.out.println("Ingrese el precio del producto");
+			inputPrecio = scan.nextLine();
+		  }
 		Producto producto = new Producto();
 		producto.setNombre(inputNombre);
 		producto.setCategoria(inputCategoria);
-		producto.setPrecio(inputPrecio);
+		producto.setPrecio(Double.parseDouble(inputPrecio));
 		
 		if(ProductoSQL.insert(producto)) {
 			System.out.println("INGRESO EXITOSO");
@@ -76,5 +90,11 @@ public class MenuProductosCLI {
 		
 	}
 	
+	private static boolean validarInputDouble(Object input) {
+		String dato = input.toString();
+		Pattern pat = Pattern.compile("^[1-4]{1}");
+	    Matcher mat = pat.matcher(dato);                                                                           
+	    return mat.matches();
+	}
 
 }
