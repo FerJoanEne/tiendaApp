@@ -7,11 +7,8 @@ import java.util.regex.Pattern;
 
 public class MenuPrincipalCLI {
 	
-	/*private MenuProductosCLI menuProductos;
-	private MenuVendedoresCLI menuVendedores;
-	private MenuVentasCLI menuVentas;*/
-	
 	public MenuPrincipalCLI() {
+		limpiarConsola();
 		int input = 0;
 		Scanner sc = new Scanner(System.in);
 		System.out.println("1. PRODUCTOS");
@@ -31,7 +28,6 @@ public class MenuPrincipalCLI {
 
 	private static void mostrarMenu(int input) {
 		limpiarConsola();
-	    System.out.println("La opcion elegida es: " + input);
 		switch(input) {
 		   case 1 :
 		      new MenuProductosCLI();

@@ -12,41 +12,39 @@ import persistencia.transacciones.ProductoSQL;
 public class MenuProductosCLI {
 	
 	public MenuProductosCLI() {
-		int input = 0;
+		String input = "";
 		Scanner sc = new Scanner(System.in);
 		System.out.println("1. INSERTAR PRODUCTO");
 		System.out.println("2. BUSCAR PRODUCTO");
 		System.out.println("3. ELIMINAR PRODUCTO");
 		System.out.println("4. volver al menu anterior");
 		System.out.println("------------------------------------------------------------------");
-		input = sc.nextInt();
-		ejecutarOpcion(input);
-		//mostrarMenu(input);
-			/*if(validarInput(input)) {
-				mostrarOpcion(input);
-			};*/
+		input = sc.nextLine();
+		if(validarInput(input)) {
+			ejecutarOpcion(input);
+		};
 
 	}
 	
 	
-	private static void ejecutarOpcion(int input) {
+	private static void ejecutarOpcion(String input) {
+		int opcion = Integer.parseInt(input);
 		MenuPrincipalCLI.limpiarConsola();
-	    System.out.println("La opcion elegida es: " + input);
-		switch(input) {
+		switch(opcion) {
 		   case 1 :
 			  crearProducto();
 		      break;
 		   
 		   case 2 :
-		      new MenuVendedoresCLI();
+		      eliminarProdutcto();
 		      break;
 		   
 		   case 3:
-			   new MenuVentasCLI();
+			   buscarProducto();
 			   break;
 			   
 		   case 4:
-			   MenuPrincipalCLI.limpiarConsola();
+			   new MenuPrincipalCLI();
 			   break;
 		   default : 
 		     System.out.println("algo salio mal que llego al default");
@@ -55,6 +53,18 @@ public class MenuProductosCLI {
 		
 	}
 	
+	private static void buscarProducto() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	private static void eliminarProdutcto() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 	private static void crearProducto() {
 		
 		Scanner scan = new Scanner(System.in);
@@ -66,17 +76,13 @@ public class MenuProductosCLI {
 
 		System.out.println("Ingrese el precio del producto");
 		String inputPrecio = scan.nextLine();
-		try
-		  {
-		    double precio = Double.parseDouble(inputPrecio);
-		    // TODO1
-		  } 
-		catch(NumberFormatException e) 
-		  {
+		
+		while(!validar(inputPrecio)) {
 		    System.out.println("error, ingrese un precio valido");
 		    System.out.println("Ingrese el precio del producto");
-			inputPrecio = scan.nextLine();
-		  }
+		    inputPrecio = scan.nextLine();
+		}
+		
 		Producto producto = new Producto();
 		producto.setNombre(inputNombre);
 		producto.setCategoria(inputCategoria);
@@ -84,17 +90,28 @@ public class MenuProductosCLI {
 		
 		if(ProductoSQL.insert(producto)) {
 			System.out.println("INGRESO EXITOSO");
+		} else {
+
+			System.out.println("hubo un error al ingresar el producto");
 		}
 		
-		System.out.println("hubo un error al ingresar el producto");
 		
 	}
 	
-	private static boolean validarInputDouble(Object input) {
+	private static boolean validarInput(String input) {
 		String dato = input.toString();
 		Pattern pat = Pattern.compile("^[1-4]{1}");
 	    Matcher mat = pat.matcher(dato);                                                                           
 	    return mat.matches();
 	}
-
+	
+	private static boolean validar(String dato) {
+		try {
+		    double precio = Double.parseDouble(dato);
+		    return true;
+		}	catch(NumberFormatException e) 
+		  {
+		    return false;
+		  }
+	}
 }
