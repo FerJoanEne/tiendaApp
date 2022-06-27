@@ -14,6 +14,7 @@ public class MenuProductosCLI {
 	public MenuProductosCLI() {
 		String input = "";
 		Scanner sc = new Scanner(System.in);
+		System.out.println("MENU PRODUCTOS");
 		System.out.println("1. INSERTAR PRODUCTO");
 		System.out.println("2. BUSCAR PRODUCTO");
 		System.out.println("3. ELIMINAR PRODUCTO");
@@ -77,7 +78,7 @@ public class MenuProductosCLI {
 		System.out.println("Ingrese el precio del producto");
 		String inputPrecio = scan.nextLine();
 		
-		while(!validar(inputPrecio)) {
+		while(!validarPrecio(inputPrecio)) {
 		    System.out.println("error, ingrese un precio valido");
 		    System.out.println("Ingrese el precio del producto");
 		    inputPrecio = scan.nextLine();
@@ -105,7 +106,7 @@ public class MenuProductosCLI {
 	    return mat.matches();
 	}
 	
-	private static boolean validar(String dato) {
+	private static boolean validarPrecio(String dato) {
 		try {
 		    double precio = Double.parseDouble(dato);
 		    return true;

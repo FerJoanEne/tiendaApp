@@ -11,6 +11,7 @@ public class MenuPrincipalCLI {
 		limpiarConsola();
 		int input = 0;
 		Scanner sc = new Scanner(System.in);
+		System.out.println("MENU PRINCIPAL");
 		System.out.println("1. PRODUCTOS");
 		System.out.println("2. VENDEDORES");
 		System.out.println("3. VENTAS");

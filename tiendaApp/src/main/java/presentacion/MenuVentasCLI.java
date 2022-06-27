@@ -6,7 +6,6 @@ public class MenuVentasCLI {
 	
 	public MenuVentasCLI() {
 		// TODO Auto-generated method stub
-		System.out.println("Menu ventas");
 		int inputVentas = 0;
 		Scanner scan = new Scanner(System.in);
 		inputVentas = scan.nextInt();
@@ -19,4 +18,7 @@ public class MenuVentasCLI {
 		inputVentas = scan.nextInt();
 		
 	}
+	
+	
+	
 }
