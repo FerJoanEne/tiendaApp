@@ -1,5 +1,8 @@
 package presentacion;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -15,7 +18,7 @@ public class MenuPrincipalCLI {
 	
 	private String input;
 	
-	public void mostrarMenu() {
+	public MenuPrincipalCLI() {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Elija una opcion [1 - 10]");
 		System.out.println("---------------------:");
@@ -30,24 +33,29 @@ public class MenuPrincipalCLI {
 		System.out.println("----------------------------------");
 		System.out.println("8. Calcular comision por vendedor");
 		System.out.println("----------------------------------");
-		System.out.println("9. Obtener BBDD");
-		System.out.println("----------------------------------");
-		System.out.println("10. FINALIZAR");
-		this.input = sc.nextLine();
-		limpiarConsola();
-		ejecutarOpcion(input);
+		System.out.println("9. FINALIZAR");
+		String in = sc.nextLine();
+		while(!esValido(in)) {
+			System.out.println("Por favor ingrese una opcion valida [1 - 9]");
+			input = sc.nextLine();
+			this.input = in;
+		}
 		sc.close();
 	}
 	
+	
+	
+	public void setInput(String input) {
+		this.input = input;
+	}
+
+	private String getInput() {
+		return this.input;
+	}
 
 	private void ejecutarOpcion(String input) {
 		Scanner  sc = new Scanner(System.in);
-		while(!esValido(input)) {
-			System.out.println("Por favor ingrese una opcion valida [1 - 10]");
-			input = sc.nextLine();
-			this.input = input;
-		}
-		sc.close();
+		
 		
 		switch(Integer.parseInt(input)) {
 		   case 1 :
@@ -81,12 +89,8 @@ public class MenuPrincipalCLI {
 		   case 8:
 			   calcularComision();
 			   break;
-			   
+			
 		   case 9:
-			   persistirBBDD();
-			   break;
-			   
-		   case 10:
 			   finalizar();
 			   break;
 		   default : 
@@ -94,6 +98,7 @@ public class MenuPrincipalCLI {
 		}
 		
 	}
+
 
 	private void registrarVendedor() {
 		// TODO Auto-generated method stub
@@ -174,7 +179,7 @@ public class MenuPrincipalCLI {
 
 	private static boolean esValido(String input) {
 		String dato = input.toString();
-		Pattern pat = Pattern.compile("^[1-10]{1}");
+		Pattern pat = Pattern.compile("^[1-9]{1}");
 	    Matcher mat = pat.matcher(dato);                                                                           
 	    return mat.matches();
 	}
