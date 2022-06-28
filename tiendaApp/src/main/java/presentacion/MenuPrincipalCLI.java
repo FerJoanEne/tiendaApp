@@ -94,9 +94,6 @@ public class MenuPrincipalCLI {
 		}
 		
 	}
-	
-	
-
 
 	private void registrarVendedor() {
 		// TODO Auto-generated method stub
