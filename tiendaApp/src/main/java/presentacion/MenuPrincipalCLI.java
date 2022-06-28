@@ -1,5 +1,6 @@
 package presentacion;
 
+import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -189,6 +190,100 @@ public class MenuPrincipalCLI {
 		  {
 		    return false;
 		  }
+	}
+
+
+	private static void buscarProductoPorCategoria() {
+		Scanner sc = new Scanner(System.in);
+		String inputCategoriaProducto = sc.next();
+		
+		List<Producto> productos = ProductoSQL.searchProducts("categoria", inputCategoriaProducto);
+		if(productos.size()>0) {
+			System.out.println("Cantidad de resultados obtenidos: "+productos.size());
+			for(Producto p : productos) {
+				System.out.println("-----------------------");
+				System.out.println("codigo: " + p.getCodigo());
+				System.out.println("Nombre: " + p.getNombre());
+				System.out.println("Categoria: " + p.getCategoria());
+				System.out.println("Precio: " + p.getPrecio());
+			}
+		} else {
+			System.out.println("sin resultados");
+		}
+		sc.close();
+		
+	}
+
+	private static void buscarProductoPorCodigo() {
+		Scanner sc = new Scanner(System.in);
+		String inputCodigoProducto = sc.next();
+		
+		List<Producto> productos = ProductoSQL.searchProducts("ID", inputCodigoProducto);
+		if(productos.size()>0) {
+			System.out.println("Cantidad de resultados obtenidos: "+productos.size());
+			for(Producto p : productos) {
+				System.out.println("-----------------------");
+				System.out.println("codigo: " + p.getCodigo());
+				System.out.println("Nombre: " + p.getNombre());
+				System.out.println("Categoria: " + p.getCategoria());
+				System.out.println("Precio: " + p.getPrecio());
+			}
+		} else {
+			System.out.println("sin resultados");
+		}
+		sc.close();
+		
+	}
+	
+	private static void buscarProductoPorNombre() {
+		Scanner sc = new Scanner(System.in);
+		String inputNombreProducto = sc.next();
+		
+		List<Producto> productos = ProductoSQL.searchProducts("nombre", inputNombreProducto);
+		if(productos.size()>0) {
+			System.out.println("Cantidad de resultados obtenidos: "+productos.size());
+			for(Producto p : productos) {
+				System.out.println("-----------------------");
+				System.out.println("codigo: " + p.getCodigo());
+				System.out.println("Nombre: " + p.getNombre());
+				System.out.println("Categoria: " + p.getCategoria());
+				System.out.println("Precio: " + p.getPrecio());
+			}
+		} else {
+			System.out.println("sin resultados");
+		}
+		sc.close();
+		
+	}
+	
+	private static void buscarProductoPorPrecio() {
+		Scanner sc = new Scanner(System.in);
+		String inputPrecioProducto = sc.next();
+		
+		List<Producto> productos = ProductoSQL.searchProducts("precio", inputPrecioProducto);
+		if(productos.size()>0) {
+			System.out.println("Cantidad de resultados obtenidos: "+productos.size());
+			for(Producto p : productos) {
+				System.out.println("-----------------------");
+				System.out.println("codigo: " + p.getCodigo());
+				System.out.println("Nombre: " + p.getNombre());
+				System.out.println("Categoria: " + p.getCategoria());
+				System.out.println("Precio: " + p.getPrecio());
+			}
+		} else {
+			System.out.println("sin resultados");
+		}
+		sc.close();
+		
+	}
+
+	private static boolean validarId(String id) {
+		try {
+			Integer.parseInt(id);
+		    return true;
+		} catch(NumberFormatException e) {
+			return false;
+		}
 	}
 	
 	private static void finalizar() {
