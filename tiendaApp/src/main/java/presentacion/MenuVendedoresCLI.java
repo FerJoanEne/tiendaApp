@@ -15,7 +15,8 @@ public class MenuVendedoresCLI {
 		System.out.println("MENU VENDEDORES");
 		System.out.println("1. INSERTAR VENDEDOR");
 		System.out.println("2. ELIMINAR VENDEDOR");
-		System.out.println("3. volver al menu anterior");
+		System.out.println("3. VER TODOS LOS VENDEDORES");
+		System.out.println("4. volver al menu anterior");
 		System.out.println("------------------------------------------------------------------");
 		input= sc.nextLine();
 		if(validarInput(input)) {
@@ -23,7 +24,6 @@ public class MenuVendedoresCLI {
 		} else {
 			new MenuVendedoresCLI();
 		};
-
 	}
 	
 	private static void ejecutarOpcion(String input) {
@@ -79,6 +79,9 @@ public class MenuVendedoresCLI {
 			System.out.println("hubo un error al hacer el ingreso");
 		}
 		
+		MenuPrincipalCLI.limpiarConsola();
+		new MenuVendedoresCLI();
+		
 	}
 
 	private static boolean validarInput(String input) {
@@ -90,7 +93,7 @@ public class MenuVendedoresCLI {
 	
 	private static boolean validarSueldo(String dato) {
 		try {
-		    double precio = Double.parseDouble(dato);
+		    Double.parseDouble(dato);
 		    return true;
 		}	catch(NumberFormatException e) 
 		  {

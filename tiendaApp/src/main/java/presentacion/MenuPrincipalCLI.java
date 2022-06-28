@@ -4,31 +4,32 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import persistencia.conexion.Conexion;
+
 
 public class MenuPrincipalCLI {
 	
 	public MenuPrincipalCLI() {
-		limpiarConsola();
-		int input = 0;
+
+		String input = "";
 		Scanner sc = new Scanner(System.in);
 		System.out.println("MENU PRINCIPAL");
 		System.out.println("1. PRODUCTOS");
 		System.out.println("2. VENDEDORES");
-		System.out.println("3. VENTAS");
+		System.out.println("3. INSERTAR UNA VENTA");
 		System.out.println("4. FINALIZAR");
 		System.out.println("------------------------------------------------------------------");
-		input = sc.nextInt();
+		input = sc.next();
 		if(validarInput(input)) {
-			mostrarMenu(input);
+			limpiarConsola();
+			mostrarMenu(Integer.parseInt(input));
 		} else {
 			new MenuPrincipalCLI();
 		}
-		
 	}
 	
 
 	private static void mostrarMenu(int input) {
-		limpiarConsola();
 		switch(input) {
 		   case 1 :
 		      new MenuProductosCLI();
@@ -39,8 +40,8 @@ public class MenuPrincipalCLI {
 		      break;
 		   
 		   case 3:
-			   new MenuVentasCLI();
-			   break;
+			  new MenuVentasCLI();
+			  break;
 			   
 		   case 4:
 			   finalizar();
@@ -60,6 +61,7 @@ public class MenuPrincipalCLI {
 	}
 	
 	private static void finalizar() {
+		Conexion.shutdown();
 		System.out.println("Programa finalizado");
         System.exit(0);
 	}
