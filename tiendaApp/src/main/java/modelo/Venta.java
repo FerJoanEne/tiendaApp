@@ -13,27 +13,62 @@ public class Venta {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long IDventa;
+	private int IDventa;
 	
 	@Column
-	private Long codVendedor;
-	
-	/////////////////////////////////////////////////
+	private int codVendedor;
 
-	public Long getIDventa() {
+	@Column
+	private String nombreProducto;
+	
+	@Column
+	private double precioProducto;
+	
+	public Venta() {
+		
+	}
+	
+	public Venta(int idVenta, int codVendedor, String nombreProducto, double precioProducto) {
+		this.IDventa = idVenta;
+		this.codVendedor = codVendedor;
+		this.nombreProducto = nombreProducto;
+		this.precioProducto = precioProducto;
+	}
+
+	///////////////////////////////////////////////////////////////////
+
+	public int getIDventa() {
 		return IDventa;
 	}
 
-	public void setIDventa(Long iDventa) {
+	public void setIDventa(int iDventa) {
 		IDventa = iDventa;
 	}
 
-	public Long getCodVendedor() {
+	public int getCodVendedor() {
 		return codVendedor;
 	}
 
-	public void setCodVendedor(Long codVendedor) {
+	public void setCodVendedor(int codVendedor) {
 		this.codVendedor = codVendedor;
 	}
+
+	public String getNombreProducto() {
+		return nombreProducto;
+	}
+
+	public void setNombreProducto(String nombreProducto) {
+		this.nombreProducto = nombreProducto;
+	}
+
+	public double getPrecioProducto() {
+		return precioProducto;
+	}
+
+	public void setPrecioProducto(double precioProducto) {
+		this.precioProducto = precioProducto;
+	}
+	
+	
 	
 }

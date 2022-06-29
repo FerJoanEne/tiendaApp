@@ -20,13 +20,25 @@ public class Vendedor {
 	
 	@Column
 	private double sueldo;
+	
+	public Vendedor() {
+		
+	}
+	
+	public Vendedor(int codigo, String nombre, double sueldo) {
+		super();
+		this.codigo = codigo;
+		this.nombre = nombre;
+		this.sueldo = sueldo;
+	}
 
+
+	////////////////////////////////////////////////
+	
 	public int getCodigo() {
 		return codigo;
 	}
 	
-	//////////////////////////////////////
-
 	public void setCodigo(int codigo) {
 		this.codigo = codigo;
 	}

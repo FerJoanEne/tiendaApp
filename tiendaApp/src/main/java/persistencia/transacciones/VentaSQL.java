@@ -1,6 +1,10 @@
 package persistencia.transacciones;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 import org.hibernate.HibernateException;
 
@@ -9,16 +13,19 @@ import persistencia.conexion.Conexion;
 
 public class VentaSQL {
 	
-	public static boolean insert(Venta venta) {
+	public static boolean insert(int codVendedor, String nombreProducto, double precioProducto) {
 		EntityManager entity = Conexion.getEntityManagerFactory().createEntityManager();
 		boolean successfulEntry = false;
-
+		Venta venta = new Venta();
+		venta.setCodVendedor(codVendedor);
+		venta.setNombreProducto(nombreProducto);
+		venta.setPrecioProducto(precioProducto);
 		try {
 			entity.getTransaction().begin();
 			entity.persist(venta);
 			entity.getTransaction().commit();
 			successfulEntry = true;
-			entity.close();
+			entity.close();						///ver si falla
 		} catch(HibernateException hibernateEx) {
 			try {
 				entity.getTransaction().rollback();
@@ -26,58 +33,32 @@ public class VentaSQL {
 			} catch (RuntimeException runtimeEx) {
 				System.err.printf("No se pudo revertir la transaccion: ", runtimeEx);
 			}
-		}
+		} 
 		
 		return successfulEntry; 
 		
 	}
 	
-	public static boolean update(Venta venta) {
-		EntityManager entity = Conexion.getEntityManagerFactory().createEntityManager();
-		boolean successfulUpdate = false;
-		if( entity.find(Venta.class, venta.getIDventa()) != null) {
-			try {
-				entity.getTransaction().begin();
-				entity.merge(venta);
-				entity.getTransaction().commit();
-				successfulUpdate = true;
-				entity.close();
-			} catch(HibernateException hibernateEx) {
-				try {
-					entity.getTransaction().rollback();
-					System.out.println(hibernateEx);
-				} catch (RuntimeException runtimeEx) {
-					System.err.printf("No se pudo revertir la transaccion: ", runtimeEx);
-				}
-			}
-		}
-		
-		return successfulUpdate; 
-		
-	}
 	
-	public static boolean remove(Venta venta) {
+	@SuppressWarnings("unchecked")
+	public static List<Venta> searchVentas(String tipoDeBusqueda, Object dato) {
 		EntityManager entity = Conexion.getEntityManagerFactory().createEntityManager();
-		boolean successfulRemoval = false;
-		if( entity.find(Venta.class, venta.getIDventa()) != null) {
-			try {
-				entity.getTransaction().begin();
-				entity.remove(venta);
-				entity.getTransaction().commit();
-				successfulRemoval = true;
-				entity.close();
-			} catch(HibernateException hibernateEx) {
-				try {
-					entity.getTransaction().rollback();
-					System.out.println(hibernateEx);
-				} catch (RuntimeException runtimeEx) {
-					System.err.printf("No se pudo revertir la transaccion: ", runtimeEx);
-				}
+		List<Venta> ventas = new ArrayList<Venta>();
+		String datoAbuscar = dato.toString();
+		if( tipoDeBusqueda.trim().equals("ID".trim())) {
+			Venta ventaEncontrada = entity.find(Venta.class,Integer.parseInt(datoAbuscar));
+			if( ventaEncontrada != null) {
+				ventas.add(ventaEncontrada);
 			}
 		}
 		
-		return successfulRemoval; 
-		
+		if( tipoDeBusqueda.trim().equals("codVendedor".trim())) {
+			Query query = entity.createQuery("from Venta venta where venta.codVendedor='"+Integer.parseInt(datoAbuscar)+"' ");
+			ventas = query.getResultList();
+		}
+
+		entity.close();
+		return ventas;
 	}
 	
 }
