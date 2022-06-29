@@ -3,6 +3,7 @@ package presentacion;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -10,206 +11,150 @@ import java.util.regex.Pattern;
 
 import modelo.Producto;
 import modelo.Vendedor;
+import modelo.Venta;
 import persistencia.transacciones.ProductoSQL;
 import persistencia.transacciones.VendedorSQL;
+import persistencia.transacciones.VentaSQL;
 
 
 public class MenuPrincipalCLI {
 	
-	private String input;
+	private StringBuilder menuPrincipal;
+	private StringBuilder menuBuscarProducto;
+	private StringBuilder menuBuscarVendedor;
+
 	
 	public MenuPrincipalCLI() {
-		Scanner sc = new Scanner(System.in);
-		System.out.println("Elija una opcion [1 - 10]");
-		System.out.println("---------------------:");
-		System.out.println("1. Registrar producto");
-		System.out.println("2. Registrar vendedor");
-		System.out.println("3. Registrar venta");
-		System.out.println("---------------------");
-		System.out.println("4. Buscar productos por categoria");
-		System.out.println("5. Buscar productos por nombre");
-		System.out.println("6. Buscar productos por codigo");
-		System.out.println("7. Buscar productos por precio");
-		System.out.println("----------------------------------");
-		System.out.println("8. Calcular comision por vendedor");
-		System.out.println("----------------------------------");
-		System.out.println("9. FINALIZAR");
-		String in = sc.nextLine();
-		while(!esValido(in)) {
-			System.out.println("Por favor ingrese una opcion valida entre [1 - 9]");
-			input = sc.nextLine();
-			this.input = in;
+		this.menuPrincipal = new StringBuilder();
+		this.menuBuscarProducto = new StringBuilder();
+		this.menuBuscarVendedor = new StringBuilder();
+		
+		this.menuPrincipal.append("Elija una opcion [1 - 7] \n");
+		this.menuPrincipal.append("------------------- \n");
+		this.menuPrincipal.append("1. Registrar producto \n");
+		this.menuPrincipal.append("2. Registrar vendedor \n");
+		this.menuPrincipal.append("3. Registrar venta \n");
+		this.menuPrincipal.append("------------------- \n");
+		this.menuPrincipal.append("4.Buscar producto \n");
+		this.menuPrincipal.append("5.Buscar vendedor \n");
+		this.menuPrincipal.append("------------------- \n");
+		this.menuPrincipal.append("6. Calcular comision por vendedor \n");
+		this.menuPrincipal.append("------------------- \n");
+		this.menuPrincipal.append("7. FINALIZAR \n");
+		
+		this.menuBuscarProducto.append("1. Buscar por codigo \n");
+		this.menuBuscarProducto.append("2. Buscar por categoria \n");
+		this.menuBuscarProducto.append("3. Buscar por nombre \n");
+		this.menuBuscarProducto.append("4. Buscar por precio \n");
+		
+		this.menuBuscarVendedor.append("1. Buscar vendedor por nombre \n");
+		this.menuBuscarVendedor.append("2. Buscar vendedor por codigo \n");
+	}
+	
+	
+	public void getMenuPrincipal() {
+		System.out.println(this.menuPrincipal.toString());
+	}
+
+	public void getMenuBuscarProducto() {
+		System.out.println(this.menuBuscarProducto.toString());
+	}
+
+	public void getMenuBuscarVendedor() {
+		System.out.println(this.menuBuscarVendedor.toString());
+	}
+
+	public boolean validarInput(String input) {
+		boolean esValido = esValido(input);
+		while(!esValido(input)) {
+			System.out.println("Por favor ingrese una opcion valida entre [1 - 7]");
 		}
-		sc.close();
-	}
-	
-	
-	
-	public void setInput(String input) {
-		this.input = input;
+		return esValido;
 	}
 
-	private String getInput() {
-		return this.input;
-	}
-
-	private void ejecutarOpcion(String input) {
-		Scanner  sc = new Scanner(System.in);
-		
-		
-		switch(Integer.parseInt(input)) {
+	public void ejecutarOpcion(ArrayList<String> datos) {
+		switch(Integer.parseInt(datos.get(0))) {
 		   case 1 :
-			   registrarProducto();
-			   break;
-		   
+			   registrarProducto(datos);
+			   break;   
+			   
 		   case 2 :
-			   registrarVendedor();
+			   registrarVendedor(datos);
 			   break;
 		   
 		   case 3:
-			   registrarVenta();
+			   registrarVenta(datos);
 			   break;
 			   
 		   case 4 :
-			   buscarProductoPorCategoria();
+			   buscarProducto(datos);
 			   break;
-			   
+
 		   case 5:
-			   buscarProductoPorNombre();
-				  break;
-				  
-		   case 6 :
-			   buscarProductoPorCodigo();
-			   break;
-					   
-		   case 7:
-			   buscarProductoPorPrecio();
+			   buscarVendedor(datos);
 			   break;
 			   
-		   case 8:
-			   calcularComision();
+		   case 6:
+			   calcularComision(datos);
 			   break;
-			
-		   case 9:
+			   
+		   case 7:
 			   finalizar();
 			   break;
+			   
 		   default : 
 		     System.out.println("algo salio mal que llego al default");
 		}
 		
 	}
+	
 
-
-	private void registrarVenta() {
-		Scanner scan = new Scanner(System.in);
-		System.out.println("Ingrese ID del vendedor");
-		String inputID = scan.nextLine();
-		List<Vendedor> vendedor = VendedorSQL.searchVendedor("codigo",inputID);
-		if(vendedor.size() == 1) {
-			System.out.println("Ingrese el nombre del producto");
-			String inputCodigoProducto = scan.next();
-			while(!validarInteger(inputCodigoProducto)) {
-				System.out.println("error, ingrese un precio codigo");
-				inputCodigoProducto = scan.next();
-			}
-			System.out.println("Ingrese la cantidad del producto vendido");
-			String inputCantidadProducto = scan.next();
-			while(!validarInteger(inputCantidadProducto)) {
-				System.out.println("error, ingrese un precio valido");
-				inputCantidadProducto = scan.next();
-			}
-			
-		} else {
-			System.out.println("Vendedor no encontrado");
-		}
+	private boolean registrarVenta(ArrayList<String> datos) {
+		return VentaSQL.insert(codVendedor, nombreProducto, precio);
+	}
+	
+	private boolean registrarVendedor(ArrayList<String> datos) {
+		return VendedorSQL.insert(nombre, sueldo);
 	}
 
-
-
-	private void registrarVendedor() {
-		Scanner scan = new Scanner(System.in);
-		System.out.println("Ingrese nombre del vendedor");
-		String inputNombre = scan.nextLine();
-		
-		System.out.println("Ingrese apellido del vendedor");
-		String inputApellido = scan.nextLine();
-		
-		System.out.println("Ingrese el sueldo del vendedor");
-		String inputSueldo = scan.nextLine();
-		
-		while(!validarDouble(inputSueldo)) {
-		    System.out.println("error, ingrese un precio valido");
-		    inputSueldo = scan.nextLine();
-		}
-		
-		Vendedor vendedor = new Vendedor();
-		vendedor.setNombre(inputNombre+" "+inputApellido);
-		vendedor.setSueldo(Double.parseDouble(inputSueldo));
-		
-		System.out.println("insertando.....");
-		
-		if(VendedorSQL.insert(vendedor)) {
-			System.out.println("INGRESO EXITOSO");
-		} else {
-			System.out.println("hubo un error al hacer el ingreso");
-		}
-		scan.close();
-
+	private boolean registrarProducto(ArrayList<String> datos) {
+		return ProductoSQL.insert(nombre, precio, categoria);
 	}
-
-
-	private static void registrarProducto() {
+	
+	private static void buscarProducto(ArrayList<String> datos) {
+		List<Producto> productos = ProductoSQL.searchProducts(tipoDeBusqueda, datoIngresado);
 		
-		Scanner scan = new Scanner(System.in);
-		System.out.println("Ingrese nombre del producto");
-		String inputNombre = scan.nextLine();
-
-		System.out.println("Ingrese categoria del producto");
-		String inputCategoria = scan.nextLine();
-
-		System.out.println("Ingrese el precio del producto");
-		String inputPrecio = scan.nextLine();
-		
-		while(!validarDouble(inputPrecio)) {
-		    System.out.println("error, ingrese un precio valido");
-		    System.out.println("Ingrese el precio del producto");
-		    inputPrecio = scan.nextLine();
-		}
-		
-		Producto producto = new Producto();
-		producto.setNombre(inputNombre);
-		producto.setCategoria(inputCategoria);
-		producto.setPrecio(Double.parseDouble(inputPrecio));
-		
-		System.out.println("ingresando...");
-		
-		if(ProductoSQL.insert(producto)) {
-			System.out.println("INGRESO EXITOSO");
+		if(productos.size()>0) {
+			System.out.println("Cantidad de resultados obtenidos: "+productos.size());
+			for(Producto p : productos) {
+				System.out.println("-----------------------");
+				System.out.println("codigo: " + p.getCodigo());
+				System.out.println("Nombre: " + p.getNombre());
+				System.out.println("Categoria: " + p.getCategoria());
+				System.out.println("Precio: " + p.getPrecio());
+			}
 		} else {
-
-			System.out.println("hubo un error al ingresar el producto");
+			System.out.println("sin resultados");
 		}
-		
-		scan.close();
 		
 	}
 	
-	private String obtenerInput() {
+	public String obtenerInput() {
 		Scanner sc = new Scanner(System.in);
-		String input = sc.nextLine();
+		String input = sc.next().toString();
 		sc.close();
 		return input;
 	}
 
 
-	private static boolean esValido(String input) {
+	public static boolean esInputValido(String input) {
 		String dato = input.toString();
-		Pattern pat = Pattern.compile("^[1-9]{1}");
+		Pattern pat = Pattern.compile("^[1-7]{1}");
 	    Matcher mat = pat.matcher(dato);                                                                           
 	    return mat.matches();
 	}
 	
-	private static boolean validarDouble(String dato) {
+	public boolean validarDouble(String dato) {
 		try {
 		    double precio = Double.parseDouble(dato);
 		    return true;
@@ -219,92 +164,8 @@ public class MenuPrincipalCLI {
 		  }
 	}
 
-
-	private static void buscarProductoPorCategoria() {
-		Scanner sc = new Scanner(System.in);
-		String inputCategoriaProducto = sc.next();
-		
-		List<Producto> productos = ProductoSQL.searchProducts("categoria", inputCategoriaProducto);
-		if(productos.size()>0) {
-			System.out.println("Cantidad de resultados obtenidos: "+productos.size());
-			for(Producto p : productos) {
-				System.out.println("-----------------------");
-				System.out.println("codigo: " + p.getCodigo());
-				System.out.println("Nombre: " + p.getNombre());
-				System.out.println("Categoria: " + p.getCategoria());
-				System.out.println("Precio: " + p.getPrecio());
-			}
-		} else {
-			System.out.println("sin resultados");
-		}
-		sc.close();
-		
-	}
-
-	private static void buscarProductoPorCodigo() {
-		Scanner sc = new Scanner(System.in);
-		String inputCodigoProducto = sc.next();
-		
-		List<Producto> productos = ProductoSQL.searchProducts("ID", inputCodigoProducto);
-		if(productos.size()>0) {
-			System.out.println("Cantidad de resultados obtenidos: "+productos.size());
-			for(Producto p : productos) {
-				System.out.println("-----------------------");
-				System.out.println("codigo: " + p.getCodigo());
-				System.out.println("Nombre: " + p.getNombre());
-				System.out.println("Categoria: " + p.getCategoria());
-				System.out.println("Precio: " + p.getPrecio());
-			}
-		} else {
-			System.out.println("sin resultados");
-		}
-		sc.close();
-		
-	}
 	
-	private static void buscarProductoPorNombre() {
-		Scanner sc = new Scanner(System.in);
-		String inputNombreProducto = sc.next();
-		
-		List<Producto> productos = ProductoSQL.searchProducts("nombre", inputNombreProducto);
-		if(productos.size()>0) {
-			System.out.println("Cantidad de resultados obtenidos: "+productos.size());
-			for(Producto p : productos) {
-				System.out.println("-----------------------");
-				System.out.println("codigo: " + p.getCodigo());
-				System.out.println("Nombre: " + p.getNombre());
-				System.out.println("Categoria: " + p.getCategoria());
-				System.out.println("Precio: " + p.getPrecio());
-			}
-		} else {
-			System.out.println("sin resultados");
-		}
-		sc.close();
-		
-	}
-	
-	private static void buscarProductoPorPrecio() {
-		Scanner sc = new Scanner(System.in);
-		String inputPrecioProducto = sc.next();
-		
-		List<Producto> productos = ProductoSQL.searchProducts("precio", inputPrecioProducto);
-		if(productos.size()>0) {
-			System.out.println("Cantidad de resultados obtenidos: "+productos.size());
-			for(Producto p : productos) {
-				System.out.println("-----------------------");
-				System.out.println("codigo: " + p.getCodigo());
-				System.out.println("Nombre: " + p.getNombre());
-				System.out.println("Categoria: " + p.getCategoria());
-				System.out.println("Precio: " + p.getPrecio());
-			}
-		} else {
-			System.out.println("sin resultados");
-		}
-		sc.close();
-		
-	}
-
-	private static boolean validarInteger(String id) {
+	public static boolean validarInteger(String id) {
 		try {
 			Integer.parseInt(id);
 		    return true;
@@ -313,12 +174,12 @@ public class MenuPrincipalCLI {
 		}
 	}
 	
-	private static void finalizar() {
+	public static void finalizar() {
 		System.out.println("Programa finalizado");
         System.exit(0);
 	}
 
-	public static void limpiarConsola(){
+	public void limpiarConsola(){
         try{
         	
         	if (System.getProperty("os.name").contains("Windows") || System.getProperty("os.name").contains("windows"))
