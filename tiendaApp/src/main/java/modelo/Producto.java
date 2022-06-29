@@ -22,6 +22,20 @@ public class Producto {
 	
 	@Column
 	private String categoria;
+	
+	
+	public Producto() {
+		
+	}
+	
+	public Producto(int codigo, String nombre, double precio, String categoria) {
+		super();
+		this.codigo = codigo;
+		this.nombre = nombre;
+		this.precio = precio;
+		this.categoria = categoria;
+	}
+
 
 	//////////////////////////////////////////////////
 	

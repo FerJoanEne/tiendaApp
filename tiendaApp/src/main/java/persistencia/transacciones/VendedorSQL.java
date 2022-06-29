@@ -13,10 +13,12 @@ import persistencia.conexion.Conexion;
 
 public class VendedorSQL {
 
-	public static boolean insert(Vendedor vendedor) {
+	public static boolean insert(String nombreVendedor, double sueldo) {
 		EntityManager entity = Conexion.getEntityManagerFactory().createEntityManager();
 		boolean successfulEntry = false;
-
+		Vendedor vendedor = new Vendedor();
+		vendedor.setNombre(nombreVendedor);
+		vendedor.setSueldo(sueldo);
 		try {
 			entity.getTransaction().begin();
 			entity.persist(vendedor);
@@ -36,34 +38,11 @@ public class VendedorSQL {
 		
 	}
 	
-	public static boolean update(Vendedor vendedor) {
-		EntityManager entity = Conexion.getEntityManagerFactory().createEntityManager();
-		boolean successfulUpdate = false;
-		if( entity.find(Vendedor.class,vendedor.getCodigo()) != null) {
-			try {
-				entity.getTransaction().begin();
-				entity.merge(vendedor);
-				entity.getTransaction().commit();
-				successfulUpdate = true;
-				entity.close();
-			} catch(HibernateException hibernateEx) {
-				try {
-					entity.getTransaction().rollback();
-					System.out.println(hibernateEx);
-				} catch (RuntimeException runtimeEx) {
-					System.err.printf("No se pudo revertir la transaccion: ", runtimeEx);
-				}
-			}
-		}
-		
-		return successfulUpdate; 
-		
-	}
 	
-	public static boolean remove(Vendedor vendedor) {
+	public static boolean remove(int codigo) {
 		EntityManager entity = Conexion.getEntityManagerFactory().createEntityManager();
 		boolean successfulRemoval = false;
-		Vendedor vendedorAuxiliar = entity.find(Vendedor.class,vendedor.getCodigo());
+		Vendedor vendedorAuxiliar = entity.find(Vendedor.class,codigo);
 		if( vendedorAuxiliar != null) {
 			try {
 				entity.getTransaction().begin();
