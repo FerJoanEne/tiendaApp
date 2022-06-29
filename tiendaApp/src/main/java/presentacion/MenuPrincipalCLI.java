@@ -36,7 +36,7 @@ public class MenuPrincipalCLI {
 		System.out.println("9. FINALIZAR");
 		String in = sc.nextLine();
 		while(!esValido(in)) {
-			System.out.println("Por favor ingrese una opcion valida [1 - 9]");
+			System.out.println("Por favor ingrese una opcion valida entre [1 - 9]");
 			input = sc.nextLine();
 			this.input = in;
 		}
@@ -100,8 +100,33 @@ public class MenuPrincipalCLI {
 	}
 
 
+	private void registrarVenta() {
+		Scanner scan = new Scanner(System.in);
+		System.out.println("Ingrese ID del vendedor");
+		String inputID = scan.nextLine();
+		List<Vendedor> vendedor = VendedorSQL.searchVendedor("codigo",inputID);
+		if(vendedor.size() == 1) {
+			System.out.println("Ingrese el nombre del producto");
+			String inputCodigoProducto = scan.next();
+			while(!validarInteger(inputCodigoProducto)) {
+				System.out.println("error, ingrese un precio codigo");
+				inputCodigoProducto = scan.next();
+			}
+			System.out.println("Ingrese la cantidad del producto vendido");
+			String inputCantidadProducto = scan.next();
+			while(!validarInteger(inputCantidadProducto)) {
+				System.out.println("error, ingrese un precio valido");
+				inputCantidadProducto = scan.next();
+			}
+			
+		} else {
+			System.out.println("Vendedor no encontrado");
+		}
+	}
+
+
+
 	private void registrarVendedor() {
-		// TODO Auto-generated method stub
 		Scanner scan = new Scanner(System.in);
 		System.out.println("Ingrese nombre del vendedor");
 		String inputNombre = scan.nextLine();
@@ -279,7 +304,7 @@ public class MenuPrincipalCLI {
 		
 	}
 
-	private static boolean validarId(String id) {
+	private static boolean validarInteger(String id) {
 		try {
 			Integer.parseInt(id);
 		    return true;

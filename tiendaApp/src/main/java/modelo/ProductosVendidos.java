@@ -19,11 +19,12 @@ public class ProductosVendidos {
 	@Column
 	private int cantidad;
 
+	/////////////////////////////////////////////
+	
 	public int getIDVenta() {
 		return IDVenta;
 	}
 	
-	/////////////////////////////////////////////
 
 	public void setIDVenta(int iDVenta) {
 		IDVenta = iDVenta;
