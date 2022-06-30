@@ -14,9 +14,13 @@ import persistencia.conexion.Conexion;
 public class ProductoSQL
 {	
 	
-	public static boolean insert(Producto producto) {
+	public static boolean insert(String nombreProducto, double precio, String categoria) {
 		EntityManager entity = Conexion.getEntityManagerFactory().createEntityManager();
 		boolean successfulEntry = false;
+		Producto producto = new Producto();
+		producto.setNombre(nombreProducto);
+		producto.setPrecio(precio);
+		producto.setCategoria(categoria);
 
 		try {
 			entity.getTransaction().begin();
@@ -27,9 +31,9 @@ public class ProductoSQL
 		} catch(HibernateException hibernateEx) {
 			try {
 				entity.getTransaction().rollback();
-				System.out.println(hibernateEx);
+				return successfulEntry;
 			} catch (RuntimeException runtimeEx) {
-				System.err.printf("No se pudo revertir la transaccion: ", runtimeEx);
+				return successfulEntry;
 			}
 		}
 		
