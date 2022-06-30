@@ -54,9 +54,9 @@ public class ProductoSQL
 			} catch(HibernateException hibernateEx) {
 				try {
 					entity.getTransaction().rollback();
-					System.out.println(hibernateEx);
+					return successfulUpdate;
 				} catch (RuntimeException runtimeEx) {
-					System.err.printf("No se pudo revertir la transaccion: ", runtimeEx);
+					return successfulUpdate;
 				}
 			}
 		}
@@ -78,9 +78,9 @@ public class ProductoSQL
 			} catch(HibernateException hibernateEx) {
 				try {
 					entity.getTransaction().rollback();
-					System.out.println(hibernateEx);
+					return successfulRemoval;
 				} catch (RuntimeException runtimeEx) {
-					System.err.printf("No se pudo revertir la transaccion: ", runtimeEx);
+					return successfulRemoval;
 				}
 			}
 		}

@@ -28,9 +28,9 @@ public class VendedorSQL {
 		} catch(HibernateException hibernateEx) {
 			try {
 				entity.getTransaction().rollback();
-				System.out.println(hibernateEx);
+				return successfulEntry;
 			} catch (RuntimeException runtimeEx) {
-				System.err.printf("No se pudo revertir la transaccion: ", runtimeEx);
+				return successfulEntry;
 			}
 		}
 		
@@ -55,9 +55,9 @@ public class VendedorSQL {
 			} catch(HibernateException hibernateEx) {
 				try {
 					entity.getTransaction().rollback();
-					System.out.println(hibernateEx);
+					return successfulRemoval;
 				} catch (RuntimeException runtimeEx) {
-					System.err.printf("No se pudo revertir la transaccion: ", runtimeEx);
+					return successfulRemoval;
 				}
 			}
 		}
