@@ -7,10 +7,11 @@ public class Main
 
 	public static void main(String[] args) {
 		MenuPrincipalCLI cli = new MenuPrincipalCLI();
+		cli.getMenuPrincipal();
 		String input = cli.obtenerInput();
-		while(!cli.esValido(input)) {
+		while(!cli.esInputValido(input)) {
 			cli.limpiarConsola();
-			cli.mostrar();
+			cli.getMenuPrincipal();
 			input = cli.obtenerInput();
 		}
 		

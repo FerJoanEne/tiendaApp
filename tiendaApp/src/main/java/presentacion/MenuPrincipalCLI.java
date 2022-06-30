@@ -64,13 +64,6 @@ public class MenuPrincipalCLI {
 		System.out.println(this.menuBuscarVendedor.toString());
 	}
 
-	public boolean validarInput(String input) {
-		boolean esValido = esValido(input);
-		while(!esValido(input)) {
-			System.out.println("Por favor ingrese una opcion valida entre [1 - 7]");
-		}
-		return esValido;
-	}
 
 	public void ejecutarOpcion(ArrayList<String> datos) {
 		switch(Integer.parseInt(datos.get(0))) {
@@ -141,13 +134,12 @@ public class MenuPrincipalCLI {
 	
 	public String obtenerInput() {
 		Scanner sc = new Scanner(System.in);
-		String input = sc.next().toString();
-		sc.close();
+		String input = sc.next();
 		return input;
 	}
 
 
-	public static boolean esInputValido(String input) {
+	public boolean esInputValido(String input) {
 		String dato = input.toString();
 		Pattern pat = Pattern.compile("^[1-7]{1}");
 	    Matcher mat = pat.matcher(dato);                                                                           
@@ -165,7 +157,7 @@ public class MenuPrincipalCLI {
 	}
 
 	
-	public static boolean validarInteger(String id) {
+	public boolean validarInteger(String id) {
 		try {
 			Integer.parseInt(id);
 		    return true;
@@ -174,7 +166,7 @@ public class MenuPrincipalCLI {
 		}
 	}
 	
-	public static void finalizar() {
+	public void finalizar() {
 		System.out.println("Programa finalizado");
         System.exit(0);
 	}
