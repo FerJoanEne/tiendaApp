@@ -93,12 +93,6 @@ public class MenuPrincipalCLI {
 		}
 		
 	}
-	
-	public String obtenerInput() {
-		Scanner sc = new Scanner(System.in);
-		String input = sc.next();
-		return input;
-	}
 
 
 	public boolean esInputValido(String input) {
