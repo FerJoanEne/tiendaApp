@@ -1,17 +1,11 @@
 package presentacion;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import modelo.Producto;
-import modelo.Vendedor;
-import modelo.Venta;
 import persistencia.transacciones.ProductoSQL;
 import persistencia.transacciones.VendedorSQL;
 import persistencia.transacciones.VentaSQL;
@@ -22,12 +16,31 @@ public class MenuPrincipalCLI {
 	private StringBuilder menuPrincipal;
 	private StringBuilder menuBuscarProducto;
 	private StringBuilder menuBuscarVendedor;
+	
+	private ArrayList<String> datosProducto;
+	private ArrayList<String> datosVendedor;
+	private ArrayList<String> datosVenta;
 
 	
 	public MenuPrincipalCLI() {
 		this.menuPrincipal = new StringBuilder();
 		this.menuBuscarProducto = new StringBuilder();
 		this.menuBuscarVendedor = new StringBuilder();
+		
+		this.datosProducto = new ArrayList<String>();
+		this.datosProducto.add("Ingrese nombre");
+		this.datosProducto.add("Ingrese precio");
+		this.datosProducto.add("Ingrese categoria");
+		
+		this.datosVendedor = new ArrayList<String>();
+		this.datosVendedor.add("Ingrese nombre");
+		this.datosVendedor.add("Ingrese precio");
+		this.datosVendedor.add("Ingrese categoria");
+		
+		this.datosVenta = new ArrayList<String>();
+		this.datosVenta.add("Ingrese codigo del vendedor");
+		this.datosVenta.add("Ingrese nombre del producto");
+		this.datosVenta.add("Ingrese el precio del producto");
 		
 		this.menuPrincipal.append("Elija una opcion [1 - 7] \n");
 		this.menuPrincipal.append("------------------- \n");
@@ -50,11 +63,23 @@ public class MenuPrincipalCLI {
 		this.menuBuscarVendedor.append("2. Buscar vendedor por codigo \n");
 	}
 	
-	
+	public ArrayList<String> getDatosProducto() {
+		return datosProducto;
+	}
+
+	public ArrayList<String> getDatosVendedor() {
+		return datosVendedor;
+	}
+
+	public ArrayList<String> getDatosVenta() {
+		return datosVenta;
+	}
+
 	public void getMenuPrincipal() {
 		System.out.println(this.menuPrincipal.toString());
 	}
-
+	
+	
 	public void getMenuBuscarProducto() {
 		System.out.println(this.menuBuscarProducto.toString());
 	}
@@ -62,7 +87,6 @@ public class MenuPrincipalCLI {
 	public void getMenuBuscarVendedor() {
 		System.out.println(this.menuBuscarVendedor.toString());
 	}
-	
 
 	public boolean registrarVenta(ArrayList<String> datos) {
 		return VentaSQL.insert(Integer.parseInt(datos.get(0)), datos.get(1), Double.parseDouble(datos.get(2)));
@@ -94,17 +118,16 @@ public class MenuPrincipalCLI {
 		
 	}
 
-
-	public boolean esInputValido(String input) {
-		String dato = input.toString();
+	public boolean esInputValido(int input) {
+		String dato = String.valueOf(input);
 		Pattern pat = Pattern.compile("^[1 - 6]{1}");
-	    Matcher mat = pat.matcher(dato);                                                                           
+	    Matcher mat = pat.matcher(dato.trim());                                                                           
 	    return mat.matches();
 	}
 	
 	public boolean validarDouble(String dato) {
 		try {
-		    double precio = Double.parseDouble(dato);
+		    Double.parseDouble(dato);
 		    return true;
 		}	catch(NumberFormatException e) 
 		  {
@@ -112,7 +135,6 @@ public class MenuPrincipalCLI {
 		  }
 	}
 
-	
 	public boolean validarInteger(String id) {
 		try {
 			Integer.parseInt(id);

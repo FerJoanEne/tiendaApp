@@ -1,6 +1,7 @@
 package main;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import presentacion.MenuPrincipalCLI;
 
@@ -9,28 +10,31 @@ public class Main
 
 	public static void main(String[] args) {
 		MenuPrincipalCLI cli = new MenuPrincipalCLI();
-		cli.getMenuPrincipal();
 		ArrayList<String> datos = new ArrayList<String>();
-		String input = cli.obtenerInput();
+		Scanner scan = new Scanner(System.in);
 		while(true) {
 			cli.limpiarConsola();
 			cli.getMenuPrincipal();
-			input = cli.obtenerInput();
-			switch(Integer.parseInt(datos.remove(0))) {
+			int input = scan.nextInt();
+			while(!cli.esInputValido(input)) {
+				System.out.println("Por favor ingrese una opcion valida");
+				input = scan.nextInt();
+			}
+			switch(input) {
 			   case 1 :
-				   cli.registrarProducto(datos);
+				   cli.getDatosProducto();
 				   break;   
 				   
 			   case 2 :
-				   cli.registrarVendedor(datos);
+				   cli.getDatosVendedor();
 				   break;
 			   
 			   case 3:
-				   cli.registrarVenta(datos);
+				   cli.getDatosVenta();
 				   break;
 				   
 			   case 4 :
-				   cli.buscarProducto(datos);
+				   cli.getMenuBuscarProducto();
 				   break;
 
 			   case 5:
