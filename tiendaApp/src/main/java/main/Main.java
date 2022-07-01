@@ -12,7 +12,7 @@ public class Main
 		cli.getMenuPrincipal();
 		ArrayList<String> datos = new ArrayList<String>();
 		String input = cli.obtenerInput();
-		while(!cli.esInputValido(input)) {
+		while(true) {
 			cli.limpiarConsola();
 			cli.getMenuPrincipal();
 			input = cli.obtenerInput();
