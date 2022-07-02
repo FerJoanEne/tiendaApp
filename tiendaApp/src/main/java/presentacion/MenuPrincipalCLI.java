@@ -166,4 +166,30 @@ public class MenuPrincipalCLI {
             System.out.println(e);
         }
     }
+
+	public boolean comprobarDatos(ArrayList<String> datos) {
+		boolean datosValidos = false;
+		int opcion = Integer.parseInt(datos.remove(0));
+		switch(opcion) {
+			case 1:
+				if(validarInteger(datos.get(0)) && validarDouble(datos.get(2))) {
+					datosValidos = true;
+				}
+				break;
+			case 2:
+				if(validarDouble(datos.get(2))) {
+					datosValidos = true;
+				}
+				break;
+			case 3:
+				break;
+			case 4:
+				break;
+			case 5:
+				break;
+			default:
+		}
+		
+		return false;
+	}
 }
