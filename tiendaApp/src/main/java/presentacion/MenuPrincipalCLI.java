@@ -218,10 +218,12 @@ public class MenuPrincipalCLI {
 				if(datos.get(0).equals("1") && validarInteger(datos.get(1)) || datos.get(0).equals("4") && validarDouble(datos.get(1))) {
 					sonDatosValidos = true;
 					transaccionExitosa = buscarProducto(datos);
-				}else {
+				}
+				if(datos.get(0).equals("3") || datos.get(0).equals("2")) {
 					sonDatosValidos = true;
 					transaccionExitosa = buscarProducto(datos);
 				}
+				
 				break;
 				
 			case 5:
