@@ -102,18 +102,18 @@ public class ProductoSQL
 			}
 		}
 		
-		if( tipoDeBusqueda.trim().equals("2".trim())) {
-			Query query = entity.createQuery("from Producto producto where producto.nombre='"+datoAbuscar+"' ");
+		if ( tipoDeBusqueda.trim().equals("2".trim())) {
+			Query query = entity.createQuery("from Producto producto where producto.categoria='"+datoAbuscar+"' ");
 			productos = query.getResultList();
 		}
 		
 		if( tipoDeBusqueda.trim().equals("3".trim())) {
-			Query query = entity.createQuery("from Producto producto where producto.precio='"+Double.parseDouble(datoAbuscar)+"' ");
+			Query query = entity.createQuery("from Producto producto where producto.nombre='"+datoAbuscar+"' ");
 			productos = query.getResultList();
 		}
 		
-		if ( tipoDeBusqueda.trim().equals("4".trim())) {
-			Query query = entity.createQuery("from Producto producto where producto.categoria='"+datoAbuscar+"' ");
+		if( tipoDeBusqueda.trim().equals("4".trim())) {
+			Query query = entity.createQuery("from Producto producto where producto.precio='"+Double.parseDouble(datoAbuscar)+"' ");
 			productos = query.getResultList();
 		}
 		

@@ -215,14 +215,12 @@ public class MenuPrincipalCLI {
 				
 			case 4:
 				datos.remove(0);
-				if(!datos.get(0).equals("1")) {
+				if(datos.get(0).equals("1") && validarInteger(datos.get(1)) || datos.get(0).equals("4") && validarDouble(datos.get(1))) {
 					sonDatosValidos = true;
 					transaccionExitosa = buscarProducto(datos);
 				}else {
-					if(validarInteger(datos.get(1))) {
-						sonDatosValidos = true;
-						transaccionExitosa = buscarProducto(datos);
-					}
+					sonDatosValidos = true;
+					transaccionExitosa = buscarProducto(datos);
 				}
 				break;
 				
