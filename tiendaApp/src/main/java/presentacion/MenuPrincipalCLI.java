@@ -1,11 +1,13 @@
 package presentacion;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import modelo.Producto;
+import modelo.Venta;
 import persistencia.transacciones.ProductoSQL;
 import persistencia.transacciones.VendedorSQL;
 import persistencia.transacciones.VentaSQL;
@@ -22,8 +24,8 @@ public class MenuPrincipalCLI {
 	private ArrayList<String> datosVenta;
 	
 	private List<Producto> listaDeProductosBuscados;
+	private HashMap<Integer,Double> ventasPorVendedor;
 
-	
 	public MenuPrincipalCLI() {
 		this.menuPrincipal = new StringBuilder();
 		this.menuBuscarProducto = new StringBuilder();
@@ -62,6 +64,8 @@ public class MenuPrincipalCLI {
 		
 		this.menuBuscarVendedor.append("1. Buscar vendedor por nombre \n");
 		this.menuBuscarVendedor.append("2. Buscar vendedor por codigo \n");
+		
+		this.ventasPorVendedor = new HashMap<Integer,Double>();
 		
 	}
 	
@@ -105,6 +109,7 @@ public class MenuPrincipalCLI {
 		this.listaDeProductosBuscados = ProductoSQL.searchProducts(datos.get(0), datos.get(1));
 		boolean seEncontraronDatos = false;
 		if(listaDeProductosBuscados.size()>0) {
+			
 			System.out.println("Cantidad de resultados obtenidos: "+this.listaDeProductosBuscados.size());
 			for(Producto p : this.listaDeProductosBuscados) {
 				System.out.println("-----------------------");
@@ -223,7 +228,10 @@ public class MenuPrincipalCLI {
 				
 			case 5:
 				datos.remove(0);
-				System.out.println("calcular comision por vendedor");
+				if(validarInteger(datos.get(1))) {
+					sonDatosValidos = true;
+					transaccionExitosa = calcularComision(datos);
+				}
 				break;
 				
 			default:
@@ -243,6 +251,32 @@ public class MenuPrincipalCLI {
 		System.out.println("error en los datos, volviendo al menu principal...");
 		return false;
 		
+	}
+
+	private boolean calcularComision(ArrayList<String> datos) {
+		List<Venta> ventasPorVendedor = VentaSQL.searchVentas("codVendedor", datos.get(0));
+		boolean seEncontraronDatos = false;
+		Double total = 0.0;
+		Double totalConComision = 0.0;
+		if(ventasPorVendedor.size()>0) {
+			for(Venta v : ventasPorVendedor) {
+				total += v.getPrecioProducto();
+			}
+			
+			if(ventasPorVendedor.size()<=2) {
+				totalConComision  = total*1.05;
+			} else {
+				totalConComision = total*1.1;
+			}
+			
+			System.out.println("Codigo del vendedor: "+ datos.get(0));
+			System.out.println("Cantidad de ventas realizadas: "+ ventasPorVendedor.size());
+			System.out.println("Total con comision: "+ totalConComision);
+			seEncontraronDatos = true;
+		}
+		
+		return seEncontraronDatos;
+
 	}
 
 	public List<Producto> getListaDeProductosBuscados() {
