@@ -19,7 +19,7 @@ public class Main
 			cli.getMenuPrincipal();
 			input = scan.next();
 			System.out.println(input);
-			while(!cli.esInputValido(input)) {
+			while(!cli.esInputValido(input.trim())) {
 				System.out.println("opcion invalida, ingrese nuevamente [1 - 6]");
 				input = scan.next();
 				System.out.println(input);
@@ -55,7 +55,7 @@ public class Main
 				   datos.add(String.valueOf(4));
 				   cli.getMenuBuscarProducto();
 				   String inputBuscarProductoPor = scan.next();
-				   while(!cli.esInputValidoBuscarProducto(inputBuscarProductoPor)) {
+				   while(!cli.esInputValidoBuscarProducto(inputBuscarProductoPor.trim())) {
 						System.out.println("(4) opcion invalida, ingrese nuevamente");
 						inputBuscarProductoPor = scan.next();
 				   }
@@ -68,7 +68,7 @@ public class Main
 				   datos.add(String.valueOf(5));
 				   System.out.println("Ingrese codigo del vendedor");
 				   String inputCodVendedor = scan.next();
-				   while(!cli.validarInteger(inputCodVendedor)) {
+				   while(!cli.validarInteger(inputCodVendedor.trim())) {
 						System.out.println("(5) dato invalido, ingrese nuevamente");
 						inputCodVendedor = scan.next();
 				   }
