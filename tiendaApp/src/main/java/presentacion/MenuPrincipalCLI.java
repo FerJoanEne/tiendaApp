@@ -228,7 +228,7 @@ public class MenuPrincipalCLI {
 				
 			case 5:
 				datos.remove(0);
-				if(validarInteger(datos.get(1))) {
+				if(validarInteger(datos.get(0))) {
 					sonDatosValidos = true;
 					transaccionExitosa = calcularComision(datos);
 				}

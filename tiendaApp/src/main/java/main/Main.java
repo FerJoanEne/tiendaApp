@@ -15,6 +15,7 @@ public class Main
 		Scanner scan = new Scanner(System.in);
 		String input = "";
 		while(true) {
+			System.out.println("----------------------------------------------------------------");
 			cli.getMenuPrincipal();
 			input = scan.next();
 			System.out.println(input);
@@ -65,7 +66,13 @@ public class Main
 
 			   case 5:
 				   datos.add(String.valueOf(5));
-				   System.out.println("opcion 5");
+				   System.out.println("Ingrese codigo del vendedor");
+				   String inputCodVendedor = scan.next();
+				   while(!cli.validarInteger(inputCodVendedor)) {
+						System.out.println("(5) dato invalido, ingrese nuevamente");
+						inputCodVendedor = scan.next();
+				   }
+				   datos.add(inputCodVendedor);
 				   break;
 				   
 			   case 6:
