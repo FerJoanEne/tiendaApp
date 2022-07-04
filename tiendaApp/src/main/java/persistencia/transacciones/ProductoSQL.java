@@ -95,24 +95,24 @@ public class ProductoSQL
 		EntityManager entity = Conexion.getEntityManagerFactory().createEntityManager();
 		List<Producto> productos = new ArrayList<Producto>();
 		String datoAbuscar = dato.toString();
-		if( tipoDeBusqueda.trim().equals("ID".trim())) {
+		if( tipoDeBusqueda.trim().equals("1".trim())) {
 			Producto productoEncontrado = entity.find(Producto.class,Integer.parseInt(datoAbuscar));
 			if( productoEncontrado != null) {
 				productos.add(productoEncontrado);
 			}
 		}
 		
-		if( tipoDeBusqueda.trim().equals("nombre".trim())) {
+		if( tipoDeBusqueda.trim().equals("2".trim())) {
 			Query query = entity.createQuery("from Producto producto where producto.nombre='"+datoAbuscar+"' ");
 			productos = query.getResultList();
 		}
 		
-		if( tipoDeBusqueda.trim().equals("precio".trim())) {
+		if( tipoDeBusqueda.trim().equals("3".trim())) {
 			Query query = entity.createQuery("from Producto producto where producto.precio='"+Double.parseDouble(datoAbuscar)+"' ");
 			productos = query.getResultList();
 		}
 		
-		if ( tipoDeBusqueda.trim().equals("categoria".trim())) {
+		if ( tipoDeBusqueda.trim().equals("4".trim())) {
 			Query query = entity.createQuery("from Producto producto where producto.categoria='"+datoAbuscar+"' ");
 			productos = query.getResultList();
 		}

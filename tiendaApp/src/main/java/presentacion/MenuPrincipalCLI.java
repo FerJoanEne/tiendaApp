@@ -20,6 +20,8 @@ public class MenuPrincipalCLI {
 	private ArrayList<String> datosProducto;
 	private ArrayList<String> datosVendedor;
 	private ArrayList<String> datosVenta;
+	
+	private List<Producto> listaDeProductosBuscados;
 
 	
 	public MenuPrincipalCLI() {
@@ -33,9 +35,8 @@ public class MenuPrincipalCLI {
 		this.datosProducto.add("Ingrese categoria");
 		
 		this.datosVendedor = new ArrayList<String>();
-		this.datosVendedor.add("Ingrese nombre");
-		this.datosVendedor.add("Ingrese precio");
-		this.datosVendedor.add("Ingrese categoria");
+		this.datosVendedor.add("Ingrese nombre del vendedor");
+		this.datosVendedor.add("Ingrese sueldo");
 		
 		this.datosVenta = new ArrayList<String>();
 		this.datosVenta.add("Ingrese codigo del vendedor");
@@ -61,6 +62,7 @@ public class MenuPrincipalCLI {
 		
 		this.menuBuscarVendedor.append("1. Buscar vendedor por nombre \n");
 		this.menuBuscarVendedor.append("2. Buscar vendedor por codigo \n");
+		
 	}
 	
 	public ArrayList<String> getDatosProducto() {
@@ -87,46 +89,47 @@ public class MenuPrincipalCLI {
 		System.out.println(this.menuBuscarVendedor.toString());
 	}
 
-	public boolean registrarVenta(ArrayList<String> datos) {
+	private boolean registrarVenta(ArrayList<String> datos) {
 		return VentaSQL.insert(Integer.parseInt(datos.get(0)), datos.get(1), Double.parseDouble(datos.get(2)));
 	}
 	
-	public boolean registrarVendedor(ArrayList<String> datos) {
+	private boolean registrarVendedor(ArrayList<String> datos) {
 		return VendedorSQL.insert(datos.get(0), Double.parseDouble(datos.get(1)));
 	}
 
-	public boolean registrarProducto(ArrayList<String> datos) {
+	private boolean registrarProducto(ArrayList<String> datos) {
 		return ProductoSQL.insert(datos.get(0), Double.parseDouble(datos.get(1)), datos.get(2));
 	}
 	
-	public void buscarProducto(ArrayList<String> datos) {
-		List<Producto> productos = ProductoSQL.searchProducts(datos.get(0), datos.get(1));
-		
-		if(productos.size()>0) {
-			System.out.println("Cantidad de resultados obtenidos: "+productos.size());
-			for(Producto p : productos) {
+	private boolean buscarProducto(ArrayList<String> datos) {
+		this.listaDeProductosBuscados = ProductoSQL.searchProducts(datos.get(0), datos.get(1));
+		boolean seEncontraronDatos = false;
+		if(listaDeProductosBuscados.size()>0) {
+			System.out.println("Cantidad de resultados obtenidos: "+this.listaDeProductosBuscados.size());
+			for(Producto p : this.listaDeProductosBuscados) {
 				System.out.println("-----------------------");
 				System.out.println("codigo: " + p.getCodigo());
 				System.out.println("Nombre: " + p.getNombre());
 				System.out.println("Categoria: " + p.getCategoria());
 				System.out.println("Precio: " + p.getPrecio());
 			}
-		} else {
-			System.out.println("sin resultados");
+			seEncontraronDatos = true;
 		}
 		
+		return seEncontraronDatos;
+		
 	}
-
+	
 	public boolean esInputValido(String input) {
 		String dato = String.valueOf(input);
-		Pattern pat = Pattern.compile("^[1 - 6]{1}");
+		Pattern pat = Pattern.compile("^[1-6]{1}");
 	    Matcher mat = pat.matcher(dato.trim());                                                                           
 	    return mat.matches();
 	}
 	
 	public boolean esInputValidoBuscarProducto(String input) {
 		String dato = String.valueOf(input);
-		Pattern pat = Pattern.compile("^[1 - 4]{1}");
+		Pattern pat = Pattern.compile("^[1-4]{1}");
 	    Matcher mat = pat.matcher(dato.trim());                                                                           
 	    return mat.matches();
 	}
@@ -176,37 +179,53 @@ public class MenuPrincipalCLI {
 	public boolean comprobaryEjecutar(ArrayList<String> datos) {
 		boolean sonDatosValidos = false;
 		boolean transaccionExitosa = false;
-		int opcion = Integer.parseInt(datos.remove(0));
+		int opcion = Integer.parseInt(datos.get(0));
+		System.out.println("Comprobando datos...");
+		
 		switch(opcion) {
 			case 1:
-				if(validarInteger(datos.get(0)) && validarDouble(datos.get(2))) {
+				datos.remove(0);
+				if(validarDouble(datos.get(1))) {
 					sonDatosValidos = true;
 					transaccionExitosa = registrarProducto(datos);
-					
 				}
 				break;
+				
 			case 2:
-				if(validarDouble(datos.get(2))) {
+				datos.remove(0);
+				if(validarDouble(datos.get(1))) {
 					sonDatosValidos = true;
 					transaccionExitosa = registrarVendedor(datos);
 				}
 				break;
+				
 			case 3:
+				datos.remove(0);
 				if(validarInteger(datos.get(0)) && validarDouble(datos.get(2))) {
 					sonDatosValidos = true;
 					transaccionExitosa = registrarVenta(datos);
+					setListaDeProductosBuscados(null);
 				}
 				break;
+				
 			case 4:
-				if(datos.get(0).equals("1") && validarInteger(datos.get(1))) {
+				datos.remove(0);
+				if(!datos.get(0).equals("1")) {
 					sonDatosValidos = true;
-					datos.remove(0);
-					buscarProducto(datos);
+					transaccionExitosa = buscarProducto(datos);
+				}else {
+					if(validarInteger(datos.get(1))) {
+						sonDatosValidos = true;
+						transaccionExitosa = buscarProducto(datos);
+					}
 				}
 				break;
+				
 			case 5:
+				datos.remove(0);
 				System.out.println("calcular comision por vendedor");
 				break;
+				
 			default:
 				System.out.println("Algo salio mal que llego al default");
 		}
@@ -224,5 +243,13 @@ public class MenuPrincipalCLI {
 		System.out.println("error en los datos, volviendo al menu principal...");
 		return false;
 		
+	}
+
+	public List<Producto> getListaDeProductosBuscados() {
+		return listaDeProductosBuscados;
+	}
+
+	public void setListaDeProductosBuscados(List<Producto> listaDeProductosBuscados) {
+		this.listaDeProductosBuscados = listaDeProductosBuscados;
 	}
 }

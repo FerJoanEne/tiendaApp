@@ -17,15 +17,17 @@ public class Main
 		while(true) {
 			cli.getMenuPrincipal();
 			input = scan.next();
+			System.out.println(input);
 			while(!cli.esInputValido(input)) {
-				System.out.println("opcion invalida, ingrese nuevamente");
+				System.out.println("opcion invalida, ingrese nuevamente [1 - 6]");
 				input = scan.next();
+				System.out.println(input);
 			}
-			int opcion = Integer.parseInt(input);
 			cli.limpiarConsola();
-			switch(opcion) {
+			
+			switch(Integer.parseInt(input)) {
 			   case 1 :
-				   datos.add(String.valueOf(input));
+				   datos.add(String.valueOf(1));
 				   for(String s: cli.getDatosProducto()) {
 					   System.out.println(s);
 					   datos.add(scan.next());
@@ -33,7 +35,7 @@ public class Main
 				   break;   
 				   
 			   case 2 :
-				   datos.add(String.valueOf(input));
+				   datos.add(String.valueOf(2));
 				   for(String s : cli.getDatosVendedor()) {
 					   System.out.println(s);
 					   datos.add(scan.next());
@@ -41,7 +43,7 @@ public class Main
 				   break;
 			   
 			   case 3:
-				   datos.add(String.valueOf(input));
+				   datos.add(String.valueOf(3));
 				   for(String s : cli.getDatosVenta()) {
 					   System.out.println(s);
 					   datos.add(scan.next());
@@ -49,11 +51,11 @@ public class Main
 				   break;
 				   
 			   case 4 :
-				   datos.add(String.valueOf(input));
+				   datos.add(String.valueOf(4));
 				   cli.getMenuBuscarProducto();
 				   String inputBuscarProductoPor = scan.next();
 				   while(!cli.esInputValidoBuscarProducto(inputBuscarProductoPor)) {
-						System.out.println("opcion invalida, ingrese nuevamente");
+						System.out.println("(4) opcion invalida, ingrese nuevamente");
 						inputBuscarProductoPor = scan.next();
 				   }
 				   datos.add(inputBuscarProductoPor);
@@ -62,7 +64,7 @@ public class Main
 				   break;
 
 			   case 5:
-				   datos.add(String.valueOf(input));
+				   datos.add(String.valueOf(5));
 				   System.out.println("opcion 5");
 				   break;
 				   
@@ -76,11 +78,9 @@ public class Main
 			    
 			}
 			
-			System.out.println("Comprobando datos...");
-			for(String s : datos) {
-				System.out.println(s);
-			}
 			if(cli.comprobaryEjecutar(datos)) {
+				datos.clear();
+				input = "";
 				try {
 					TimeUnit.SECONDS.sleep(2);
 				} catch (Exception e) {
@@ -88,6 +88,8 @@ public class Main
 					System.out.println("algo salio mal al ralentizar el servicio");
 				}
 			} else {
+
+				input = "";
 				try {
 					TimeUnit.SECONDS.sleep(2);
 				} catch (Exception e) {
@@ -96,11 +98,8 @@ public class Main
 				}
 				cli.limpiarConsola();
 			}
-			input = "";
-			datos.clear();
+			
 		}
-		
-		
 		
     }
 }
