@@ -42,7 +42,7 @@ public class MenuPrincipalCLI {
 		this.datosVenta.add("Ingrese nombre del producto");
 		this.datosVenta.add("Ingrese el precio del producto");
 		
-		this.menuPrincipal.append("Elija una opcion [1 - 7] \n");
+		this.menuPrincipal.append("Elija una opcion [1 - 6] \n");
 		this.menuPrincipal.append("------------------- \n");
 		this.menuPrincipal.append("1. Registrar producto \n");
 		this.menuPrincipal.append("2. Registrar vendedor \n");
@@ -78,7 +78,6 @@ public class MenuPrincipalCLI {
 	public void getMenuPrincipal() {
 		System.out.println(this.menuPrincipal.toString());
 	}
-	
 	
 	public void getMenuBuscarProducto() {
 		System.out.println(this.menuBuscarProducto.toString());
@@ -118,9 +117,16 @@ public class MenuPrincipalCLI {
 		
 	}
 
-	public boolean esInputValido(int input) {
+	public boolean esInputValido(String input) {
 		String dato = String.valueOf(input);
 		Pattern pat = Pattern.compile("^[1 - 6]{1}");
+	    Matcher mat = pat.matcher(dato.trim());                                                                           
+	    return mat.matches();
+	}
+	
+	public boolean esInputValidoBuscarProducto(String input) {
+		String dato = String.valueOf(input);
+		Pattern pat = Pattern.compile("^[1 - 4]{1}");
 	    Matcher mat = pat.matcher(dato.trim());                                                                           
 	    return mat.matches();
 	}
@@ -167,29 +173,56 @@ public class MenuPrincipalCLI {
         }
     }
 
-	public boolean comprobarDatos(ArrayList<String> datos) {
-		boolean datosValidos = false;
+	public boolean comprobaryEjecutar(ArrayList<String> datos) {
+		boolean sonDatosValidos = false;
+		boolean transaccionExitosa = false;
 		int opcion = Integer.parseInt(datos.remove(0));
 		switch(opcion) {
 			case 1:
 				if(validarInteger(datos.get(0)) && validarDouble(datos.get(2))) {
-					datosValidos = true;
+					sonDatosValidos = true;
+					transaccionExitosa = registrarProducto(datos);
+					
 				}
 				break;
 			case 2:
 				if(validarDouble(datos.get(2))) {
-					datosValidos = true;
+					sonDatosValidos = true;
+					transaccionExitosa = registrarVendedor(datos);
 				}
 				break;
 			case 3:
+				if(validarInteger(datos.get(0)) && validarDouble(datos.get(2))) {
+					sonDatosValidos = true;
+					transaccionExitosa = registrarVenta(datos);
+				}
 				break;
 			case 4:
+				if(datos.get(0).equals("1") && validarInteger(datos.get(1))) {
+					sonDatosValidos = true;
+					datos.remove(0);
+					buscarProducto(datos);
+				}
 				break;
 			case 5:
+				System.out.println("calcular comision por vendedor");
 				break;
 			default:
+				System.out.println("Algo salio mal que llego al default");
 		}
 		
+		if(sonDatosValidos) {
+			if(transaccionExitosa) {
+				System.out.println("Transaccion exitosa");
+				return true;
+			}
+			else {
+				System.out.println("No pudo concretarse la transaccion");
+				return false;
+			}
+		}
+		System.out.println("error en los datos, volviendo al menu principal...");
 		return false;
+		
 	}
 }

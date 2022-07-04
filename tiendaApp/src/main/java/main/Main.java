@@ -13,17 +13,17 @@ public class Main
 		MenuPrincipalCLI cli = new MenuPrincipalCLI();
 		ArrayList<String> datos = new ArrayList<String>();
 		Scanner scan = new Scanner(System.in);
-		int input = 0;
-		while(input!=6) {
+		String input = "";
+		while(true) {
 			cli.getMenuPrincipal();
-			input = scan.nextInt();
+			input = scan.next();
 			while(!cli.esInputValido(input)) {
 				System.out.println("opcion invalida, ingrese nuevamente");
-				
+				input = scan.next();
 			}
-			
+			int opcion = Integer.parseInt(input);
 			cli.limpiarConsola();
-			switch(input) {
+			switch(opcion) {
 			   case 1 :
 				   datos.add(String.valueOf(input));
 				   for(String s: cli.getDatosProducto()) {
@@ -51,7 +51,12 @@ public class Main
 			   case 4 :
 				   datos.add(String.valueOf(input));
 				   cli.getMenuBuscarProducto();
-				   datos.add(scan.next());
+				   String inputBuscarProductoPor = scan.next();
+				   while(!cli.esInputValidoBuscarProducto(inputBuscarProductoPor)) {
+						System.out.println("opcion invalida, ingrese nuevamente");
+						inputBuscarProductoPor = scan.next();
+				   }
+				   datos.add(inputBuscarProductoPor);
 				   System.out.println("Ingrese el dato a buscar");
 				   datos.add(scan.next());
 				   break;
@@ -62,6 +67,7 @@ public class Main
 				   break;
 				   
 			   case 6:
+				   scan.close();
 				   cli.finalizar();
 				   break;
 				   
@@ -70,21 +76,31 @@ public class Main
 			    
 			}
 			
-			if(!cli.comprobarDatos(datos)) {
+			System.out.println("Comprobando datos...");
+			for(String s : datos) {
+				System.out.println(s);
+			}
+			if(cli.comprobaryEjecutar(datos)) {
 				try {
-					System.out.println("Datos erroneos, volviendo al menu principal...");
 					TimeUnit.SECONDS.sleep(2);
-				} catch (InterruptedException e) {
+				} catch (Exception e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					System.out.println("algo salio mal al ralentizar el servicio");
 				}
 			} else {
-				cli.ejecutar(datos);			
+				try {
+					TimeUnit.SECONDS.sleep(2);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					System.out.println("algo salio mal al ralentizar el servicio");
+				}
+				cli.limpiarConsola();
 			}
-			System.out.println("volviendo al menu principal...");
+			input = "";
+			datos.clear();
 		}
 		
-		scan.close();
+		
 		
     }
 }
